@@ -1204,7 +1204,7 @@
                 "description": "Lists private channels that the calling user has access to.",
                 "parameters": [
                     {
-                        "description": "Exlude the `members` from each `group`",
+                        "description": "Exclude the `members` from each `group`",
                         "type": "boolean",
                         "name": "exclude_members",
                         "in": "query"
