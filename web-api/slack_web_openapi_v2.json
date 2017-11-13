@@ -1,6 +1,6 @@
 {
     "info": {
-        "version": "1.0.0",
+        "version": "1.0.1",
         "description": "One way to interact with the Slack platform is its HTTP RPC-based Web API, a collection of methods requiring OAuth 2.0-based user, bot, or workspace tokens blessed with related OAuth scopes.",
         "title": "Slack Web API"
     },
@@ -1204,7 +1204,7 @@
                 "description": "Lists private channels that the calling user has access to.",
                 "parameters": [
                     {
-                        "description": "Exlude the `members` from each `group`",
+                        "description": "Exclude the `members` from each `group`",
                         "type": "boolean",
                         "name": "exclude_members",
                         "in": "query"
@@ -9059,7 +9059,7 @@
                 "operationId": "conversations_rename"
             }
         },
-        "/users.identity": {
+        "/migration.exchange": {
             "get": {
                 "responses": {
                     "default": {
@@ -9077,11 +9077,11 @@
                                 }
                             }
                         },
-                        "description": "Typical error response",
+                        "description": "Typical error response when there are no mappings to provide",
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "account_inactive"
+                                "error": "user_mapping_not_exist"
                             }
                         }
                     },
@@ -9100,32 +9100,49 @@
                                 }
                             }
                         },
-                        "description": "You will receive at a minimum the following information:",
+                        "description": "Typical success response when mappings exist for the specified user IDs",
                         "examples": {
                             "application/json": {
+                                "team_id": "T1KR7PE1W",
                                 "ok": true,
-                                "user": {
-                                    "name": "Sonny Whether",
-                                    "id": "U0G9QF9C6"
-                                },
-                                "team": {
-                                    "id": "T0G9PQBBK"
+                                "enterprise_id": "E1KQTNXE1",
+                                "invalid_user_ids": [
+                                    "U21ABZZXX"
+                                ],
+                                "user_id_map": {
+                                    "U06UBSUN5": "W06M56XJM",
+                                    "U06UBSVDX": "W06PUUDMW",
+                                    "U06UEB62U": "W06PTT6GH",
+                                    "W06UAZ65Q": "W06UAZ65Q",
+                                    "U06UBSVB3": "W06PUUDLY"
                                 }
                             }
                         }
                     }
                 },
-                "description": "Get a user's identity.",
+                "description": "For teams migrated to enterprise, map user ids before and after migration.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `identity.basic`",
+                        "description": "Authentication token. Requires scope: `tokens.basic`",
                         "type": "string",
                         "name": "token",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Specify `true` to convert `W` global user IDs to workspace-specific `U` IDs. Defaults to `false`.",
+                        "type": "boolean",
+                        "name": "to_old",
+                        "in": "query"
+                    },
+                    {
+                        "description": "A comma-separated list of user ids, up to 400 per request",
+                        "type": "string",
+                        "name": "users",
                         "in": "query"
                     }
                 ],
                 "tags": [
-                    "users"
+                    "migration"
                 ],
                 "produces": [
                     "application/json"
@@ -9133,18 +9150,18 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "identity.basic"
+                            "tokens.basic"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/users.identity",
+                    "url": "https://api.slack.com/methods/migration.exchange",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded"
                 ],
-                "operationId": "users_identity"
+                "operationId": "migration_exchange"
             }
         },
         "/usergroups.enable": {
@@ -9854,6 +9871,94 @@
                     "application/x-www-form-urlencoded"
                 ],
                 "operationId": "search_files"
+            }
+        },
+        "/users.identity": {
+            "get": {
+                "responses": {
+                    "default": {
+                        "schema": {
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default error template",
+                            "required": [
+                                "ok"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_true"
+                                }
+                            }
+                        },
+                        "description": "Typical error response",
+                        "examples": {
+                            "application/json": {
+                                "ok": false,
+                                "error": "account_inactive"
+                            }
+                        }
+                    },
+                    "200": {
+                        "schema": {
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default success template",
+                            "required": [
+                                "ok"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_true"
+                                }
+                            }
+                        },
+                        "description": "You will receive at a minimum the following information:",
+                        "examples": {
+                            "application/json": {
+                                "ok": true,
+                                "user": {
+                                    "name": "Sonny Whether",
+                                    "id": "U0G9QF9C6"
+                                },
+                                "team": {
+                                    "id": "T0G9PQBBK"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a user's identity.",
+                "parameters": [
+                    {
+                        "description": "Authentication token. Requires scope: `identity.basic`",
+                        "type": "string",
+                        "name": "token",
+                        "in": "query"
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "slackAuth": [
+                            "identity.basic"
+                        ]
+                    }
+                ],
+                "externalDocs": {
+                    "url": "https://api.slack.com/methods/users.identity",
+                    "description": "API method documentation"
+                },
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "operationId": "users_identity"
             }
         },
         "/team.accessLogs": {
@@ -13252,7 +13357,10 @@
                                         "id": "D6K48KKRN"
                                     }
                                 ],
-                                "ok": true
+                                "ok": true,
+                                "response_metadata": {
+                                    "next_cursor": "aW1faWQ6RDBCSDk1RExI="
+                                }
                             }
                         }
                     }
@@ -16288,6 +16396,7 @@
                 "chat:write:user": "chat:write:user",
                 "identity.basic": "identity.basic",
                 "conversations:write": "conversations:write",
+                "tokens.basic": "tokens.basic",
                 "groups:write": "groups:write",
                 "conversations:history": "conversations:history",
                 "reactions:read": "reactions:read",
@@ -16300,7 +16409,7 @@
                 "pins:write": "pins:write",
                 "usergroups:write": "usergroups:write",
                 "usergroups:read": "usergroups:read",
-                "im:history": "im:history",
+                "channels:history": "channels:history",
                 "groups:history": "groups:history",
                 "dnd:write": "dnd:write",
                 "files:write:user": "files:write:user",
@@ -16325,7 +16434,7 @@
                 "rtm:stream": "rtm:stream",
                 "users:read": "users:read",
                 "reminders:write": "reminders:write",
-                "channels:history": "channels:history"
+                "im:history": "im:history"
             }
         }
     },
@@ -16646,10 +16755,61 @@
             "type": "string",
             "title": "Name of a channel"
         },
-        "objs_comments": {
-            "items": {},
-            "type": "array",
-            "title": "file comments object"
+        "objs_team_profile_field": {
+            "additionalProperties": true,
+            "required": [
+                "id",
+                "ordering",
+                "label",
+                "hint",
+                "type",
+                "options"
+            ],
+            "type": "object",
+            "properties": {
+                "hint": {
+                    "type": "string"
+                },
+                "ordering": {
+                    "type": "number"
+                },
+                "type": {
+                    "enum": [
+                        "text",
+                        "date",
+                        "link",
+                        "mailto",
+                        "options_list",
+                        "user"
+                    ],
+                    "type": "string"
+                },
+                "possible_values": {
+                    "type": [
+                        "null",
+                        "array"
+                    ]
+                },
+                "label": {
+                    "type": "string"
+                },
+                "id": {
+                    "pattern": "^X[a-zA-Z0-9]{9}$",
+                    "type": "string"
+                },
+                "is_hidden": {
+                    "type": "boolean"
+                },
+                "field_name": {
+                    "type": "string"
+                },
+                "options": {
+                    "type": [
+                        "null",
+                        "array"
+                    ]
+                }
+            }
         },
         "defs_dm_id": {
             "pattern": "^[D][A-Z0-9]{8}$",
@@ -16871,6 +17031,11 @@
             "type": "string",
             "title": "Private Channel ID"
         },
+        "defs_user_id": {
+            "pattern": "^[UW][A-Z0-9]{8}$",
+            "type": "string",
+            "title": "User ID"
+        },
         "objs_group": {
             "additionalProperties": true,
             "required": [
@@ -17047,61 +17212,10 @@
                 }
             }
         },
-        "objs_team_profile_field": {
-            "additionalProperties": true,
-            "required": [
-                "id",
-                "ordering",
-                "label",
-                "hint",
-                "type",
-                "options"
-            ],
-            "type": "object",
-            "properties": {
-                "hint": {
-                    "type": "string"
-                },
-                "ordering": {
-                    "type": "number"
-                },
-                "type": {
-                    "enum": [
-                        "text",
-                        "date",
-                        "link",
-                        "mailto",
-                        "options_list",
-                        "user"
-                    ],
-                    "type": "string"
-                },
-                "possible_values": {
-                    "type": [
-                        "null",
-                        "array"
-                    ]
-                },
-                "label": {
-                    "type": "string"
-                },
-                "id": {
-                    "pattern": "^X[a-zA-Z0-9]{9}$",
-                    "type": "string"
-                },
-                "is_hidden": {
-                    "type": "boolean"
-                },
-                "field_name": {
-                    "type": "string"
-                },
-                "options": {
-                    "type": [
-                        "null",
-                        "array"
-                    ]
-                }
-            }
+        "objs_comments": {
+            "items": {},
+            "type": "array",
+            "title": "file comments object"
         },
         "defs_ok_true": {
             "enum": [
@@ -17274,7 +17388,7 @@
                             }
                         },
                         "pin_count": {
-                            "type": "string"
+                            "type": "integer"
                         },
                         "is_private": {
                             "type": "boolean"
