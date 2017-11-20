@@ -1,6 +1,6 @@
 {
     "info": {
-        "version": "1.0.1",
+        "version": "1.0.2",
         "description": "One way to interact with the Slack platform is its HTTP RPC-based Web API, a collection of methods requiring OAuth 2.0-based user, bot, or workspace tokens blessed with related OAuth scopes.",
         "title": "Slack Web API"
     },
@@ -460,7 +460,7 @@
                                 }
                             }
                         },
-                        "description": "When successful, returns bot info by ID.",
+                        "description": "When successful, returns bot info by bot ID.",
                         "examples": {
                             "application/json": {
                                 "bot": {
@@ -5804,115 +5804,75 @@
                 "operationId": "channels_leave"
             }
         },
-        "/conversations.setPurpose": {
-            "post": {
+        "/chat.getPermalink": {
+            "get": {
                 "responses": {
                     "default": {
-                        "schema": {
-                            "description": "Schema for error response from conversations.setPurpose method",
-                            "title": "conversations.setPurpose error schema",
-                            "required": [
-                                "ok",
-                                "error"
-                            ],
-                            "additionalProperties": true,
-                            "type": "object",
-                            "properties": {
-                                "needed": {
-                                    "type": "string"
-                                },
-                                "error": {
-                                    "enum": [
-                                        "method_not_supported_for_channel_type",
-                                        "missing_scope",
-                                        "channel_not_found",
-                                        "not_in_channel",
-                                        "is_archived",
-                                        "too_long",
-                                        "user_is_restricted",
-                                        "not_authed",
-                                        "invalid_auth",
-                                        "account_inactive",
-                                        "invalid_arg_name",
-                                        "invalid_array_arg",
-                                        "invalid_charset",
-                                        "invalid_form_data",
-                                        "invalid_post_type",
-                                        "missing_post_type",
-                                        "team_added_to_org",
-                                        "invalid_json",
-                                        "json_not_object",
-                                        "request_timeout",
-                                        "upgrade_required"
-                                    ],
-                                    "type": "string"
-                                },
-                                "ok": {
-                                    "$ref": "#/definitions/defs_ok_false"
-                                },
-                                "provided": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "description": "Typical error response",
+                        "schema": {},
+                        "description": "Error response when channel cannot be found",
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "channel_not_found"
                             }
                         }
                     },
                     "200": {
                         "schema": {
-                            "description": "Schema for successful response from conversations.setPurpose method",
-                            "title": "conversations.setPurpose success schema",
+                            "description": "Schema for successful response chat.getPermalink",
+                            "title": "chat.getPermalink success schema",
                             "required": [
                                 "ok",
-                                "channel"
+                                "channel",
+                                "permalink"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "permalink": {
+                                    "type": "string"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
                                 },
                                 "channel": {
-                                    "$ref": "#/definitions/objs_conversation"
+                                    "$ref": "#/definitions/defs_channel"
                                 }
                             }
                         },
-                        "description": "Typical success response",
+                        "description": "Standard success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "permalink": "https://ghostbusters.slack.com/archives/C1H9RESGL/p135854651500000",
+                                "ok": true,
+                                "channel": "C1H9RESGL"
                             }
                         }
                     }
                 },
-                "description": "Sets the purpose for a conversation.",
+                "description": "Retrieve a permalink URL for a specific extant message",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `conversations:write`",
+                        "description": "Authentication token. Requires scope: `tokens.basic`",
                         "type": "string",
                         "name": "token",
-                        "in": "header"
+                        "in": "query"
                     },
                     {
-                        "description": "A new, specialer purpose",
-                        "type": "string",
-                        "name": "purpose",
-                        "in": "formData"
+                        "description": "A message's `ts` value, uniquely identifying it within a channel",
+                        "type": "number",
+                        "name": "message_ts",
+                        "in": "query"
                     },
                     {
-                        "description": "Conversation to set the purpose of",
+                        "description": "The ID of the conversation or channel containing the message",
                         "type": "string",
                         "name": "channel",
-                        "in": "formData"
+                        "in": "query"
                     }
                 ],
                 "tags": [
-                    "conversations"
+                    "chat"
                 ],
                 "produces": [
                     "application/json"
@@ -5920,22 +5880,18 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "channels:write",
-                            "groups:write",
-                            "im:write",
-                            "mpim:write"
+                            "tokens.basic"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/conversations.setPurpose",
+                    "url": "https://api.slack.com/methods/chat.getPermalink",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded",
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
-                "operationId": "conversations_setPurpose"
+                "operationId": "chat_getPermalink"
             }
         },
         "/channels.rename": {
@@ -7614,6 +7570,7 @@
                                 "error": {
                                     "enum": [
                                         "method_not_supported_for_channel_type",
+                                        "last_member",
                                         "missing_scope",
                                         "channel_not_found",
                                         "is_archived",
@@ -9081,7 +9038,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "user_mapping_not_exist"
+                                "error": "not_enterprise_team"
                             }
                         }
                     },
@@ -9120,7 +9077,7 @@
                         }
                     }
                 },
-                "description": "For teams migrated to enterprise, map user ids before and after migration.",
+                "description": "For Enterprise Grid workspaces, map local user IDs to global user IDs",
                 "parameters": [
                     {
                         "description": "Authentication token. Requires scope: `tokens.basic`",
@@ -10184,7 +10141,7 @@
                 "operationId": "groups_invite"
             }
         },
-        "/chat.meMessage": {
+        "/channels.unarchive": {
             "post": {
                 "responses": {
                     "default": {
@@ -10228,36 +10185,28 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true,
-                                "ts": "1417671948.000006",
-                                "channel": "C024BE7LR"
+                                "ok": true
                             }
                         }
                     }
                 },
-                "description": "Share a me message into a channel.",
+                "description": "Unarchives a channel.",
                 "parameters": [
                     {
-                        "description": "Text of the message to send.",
-                        "type": "string",
-                        "name": "text",
-                        "in": "formData"
-                    },
-                    {
-                        "description": "Authentication token. Requires scope: `chat:write:user`",
+                        "description": "Authentication token. Requires scope: `channels:write`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.",
+                        "description": "Channel to unarchive",
                         "type": "string",
                         "name": "channel",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "chat"
+                    "channels"
                 ],
                 "produces": [
                     "application/json"
@@ -10265,19 +10214,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "chat:write:user"
+                            "channels:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/chat.meMessage",
+                    "url": "https://api.slack.com/methods/channels.unarchive",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "chat_meMessage"
+                "operationId": "channels_unarchive"
             }
         },
         "/rtm.connect": {
@@ -11139,6 +11088,140 @@
                 "operationId": "reminders_add"
             }
         },
+        "/conversations.setPurpose": {
+            "post": {
+                "responses": {
+                    "default": {
+                        "schema": {
+                            "description": "Schema for error response from conversations.setPurpose method",
+                            "title": "conversations.setPurpose error schema",
+                            "required": [
+                                "ok",
+                                "error"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "needed": {
+                                    "type": "string"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "method_not_supported_for_channel_type",
+                                        "missing_scope",
+                                        "channel_not_found",
+                                        "not_in_channel",
+                                        "is_archived",
+                                        "too_long",
+                                        "user_is_restricted",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
+                                },
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "provided": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Typical error response",
+                        "examples": {
+                            "application/json": {
+                                "ok": false,
+                                "error": "invalid_auth"
+                            }
+                        }
+                    },
+                    "200": {
+                        "schema": {
+                            "description": "Schema for successful response from conversations.setPurpose method",
+                            "title": "conversations.setPurpose success schema",
+                            "required": [
+                                "ok",
+                                "channel"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "channel": {
+                                    "$ref": "#/definitions/objs_conversation"
+                                }
+                            }
+                        },
+                        "description": "Typical success response",
+                        "examples": {
+                            "application/json": {
+                                "ok": true
+                            }
+                        }
+                    }
+                },
+                "description": "Sets the purpose for a conversation.",
+                "parameters": [
+                    {
+                        "description": "Authentication token. Requires scope: `conversations:write`",
+                        "type": "string",
+                        "name": "token",
+                        "in": "header"
+                    },
+                    {
+                        "description": "A new, specialer purpose",
+                        "type": "string",
+                        "name": "purpose",
+                        "in": "formData"
+                    },
+                    {
+                        "description": "Conversation to set the purpose of",
+                        "type": "string",
+                        "name": "channel",
+                        "in": "formData"
+                    }
+                ],
+                "tags": [
+                    "conversations"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "slackAuth": [
+                            "channels:write",
+                            "groups:write",
+                            "im:write",
+                            "mpim:write"
+                        ]
+                    }
+                ],
+                "externalDocs": {
+                    "url": "https://api.slack.com/methods/conversations.setPurpose",
+                    "description": "API method documentation"
+                },
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "application/json"
+                ],
+                "operationId": "conversations_setPurpose"
+            }
+        },
         "/channels.join": {
             "post": {
                 "responses": {
@@ -11876,7 +11959,7 @@
                 "operationId": "conversations_info"
             }
         },
-        "/channels.unarchive": {
+        "/chat.meMessage": {
             "post": {
                 "responses": {
                     "default": {
@@ -11920,28 +12003,36 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "ok": true,
+                                "ts": "1417671948.000006",
+                                "channel": "C024BE7LR"
                             }
                         }
                     }
                 },
-                "description": "Unarchives a channel.",
+                "description": "Share a me message into a channel.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `channels:write`",
+                        "description": "Text of the message to send.",
+                        "type": "string",
+                        "name": "text",
+                        "in": "formData"
+                    },
+                    {
+                        "description": "Authentication token. Requires scope: `chat:write:user`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Channel to unarchive",
+                        "description": "Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.",
                         "type": "string",
                         "name": "channel",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "channels"
+                    "chat"
                 ],
                 "produces": [
                     "application/json"
@@ -11949,19 +12040,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "channels:write"
+                            "chat:write:user"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/channels.unarchive",
+                    "url": "https://api.slack.com/methods/chat.meMessage",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "channels_unarchive"
+                "operationId": "chat_meMessage"
             }
         },
         "/dnd.endSnooze": {
@@ -12331,6 +12422,7 @@
                         "in": "query"
                     },
                     {
+                        "description": "Pass the number of results you want per \"page\". Maximum of `100`.",
                         "type": "string",
                         "name": "count",
                         "in": "query"
