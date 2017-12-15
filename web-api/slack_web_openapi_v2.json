@@ -1,6 +1,6 @@
 {
     "info": {
-        "version": "1.0.2",
+        "version": "1.0.3",
         "description": "One way to interact with the Slack platform is its HTTP RPC-based Web API, a collection of methods requiring OAuth 2.0-based user, bot, or workspace tokens blessed with related OAuth scopes.",
         "title": "Slack Web API"
     },
@@ -92,7 +92,8 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "chat:write"
+                            "chat:write:user",
+                            "chat:write:bot"
                         ]
                     }
                 ],
@@ -131,6 +132,7 @@
                                         "not_authed",
                                         "invalid_auth",
                                         "account_inactive",
+                                        "no_permission",
                                         "invalid_arg_name",
                                         "invalid_array_arg",
                                         "invalid_charset",
@@ -348,7 +350,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "channel_not_found"
                             }
                         }
                     },
@@ -370,6 +372,25 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
+                                "messages": [
+                                    {
+                                        "text": "Hello",
+                                        "type": "message",
+                                        "ts": "1358546515.000008",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "text": "World",
+                                        "is_starred": true,
+                                        "type": "message",
+                                        "ts": "1358546515.000007",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "type": "something_else",
+                                        "ts": "1358546515.000007"
+                                    }
+                                ],
                                 "ok": true
                             }
                         }
@@ -2511,7 +2532,6 @@
                                         "type": "message"
                                     },
                                     {
-                                        "wibblr": true,
                                         "type": "something_else",
                                         "ts": "1358546515.000007"
                                     },
@@ -2831,16 +2851,42 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response files.upload method",
+                            "title": "files.upload error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "posting_to_general_channel_denied",
+                                        "invalid_channel",
+                                        "file_uploads_disabled",
+                                        "file_uploads_except_images_disabled",
+                                        "storage_limit_reached",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -2854,16 +2900,20 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response files.upload method",
+                            "title": "files.upload schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "file"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "file": {
+                                    "$ref": "#/definitions/objs_file"
                                 }
                             }
                         },
@@ -3289,6 +3339,141 @@
                     "application/x-www-form-urlencoded"
                 ],
                 "operationId": "users_info"
+            }
+        },
+        "/users.lookupByEmail": {
+            "get": {
+                "responses": {
+                    "default": {
+                        "schema": {
+                            "description": "Schema for error response from users.lookupByEmail method",
+                            "title": "users.lookupByEmail error schema",
+                            "required": [
+                                "ok",
+                                "error"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "user_not_found"
+                                    ],
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Typical error response",
+                        "examples": {
+                            "application/json": {
+                                "ok": false,
+                                "error": "user_not_found"
+                            }
+                        }
+                    },
+                    "200": {
+                        "schema": {
+                            "description": "Schema for successful response from users.lookupByEmail method",
+                            "title": "users.lookupByEmail success schema",
+                            "required": [
+                                "ok",
+                                "user"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "user": {
+                                    "$ref": "#/definitions/defs_user"
+                                }
+                            }
+                        },
+                        "description": "Typical success response",
+                        "examples": {
+                            "application/json": {
+                                "ok": true,
+                                "user": {
+                                    "profile": {
+                                        "display_name": "spengler",
+                                        "status_emoji": ":books:",
+                                        "team": "T012AB3C4",
+                                        "real_name": "Egon Spengler",
+                                        "image_24": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                        "real_name_normalized": "Egon Spengler",
+                                        "image_512": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                        "display_name_normalized": "spengler",
+                                        "image_32": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                        "image_48": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                        "image_72": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                        "avatar_hash": "ge3b51ca72de",
+                                        "status_text": "Print is dead",
+                                        "email": "spengler@ghostbusters.example.com",
+                                        "image_192": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg"
+                                    },
+                                    "updated": 1502138686,
+                                    "tz": "America/Los_Angeles",
+                                    "name": "spengler",
+                                    "deleted": false,
+                                    "is_app_user": false,
+                                    "is_bot": false,
+                                    "tz_label": "Pacific Daylight Time",
+                                    "real_name": "episod",
+                                    "color": "9f69e7",
+                                    "team_id": "T012AB3C4",
+                                    "is_admin": true,
+                                    "is_ultra_restricted": false,
+                                    "is_restricted": false,
+                                    "is_owner": false,
+                                    "tz_offset": -25200,
+                                    "has_2fa": false,
+                                    "id": "W012A3CDE",
+                                    "is_primary_owner": false
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Find a user with an email address.",
+                "parameters": [
+                    {
+                        "description": "Authentication token. Requires scope: `users:read.email`",
+                        "type": "string",
+                        "name": "token",
+                        "in": "query"
+                    },
+                    {
+                        "description": "An email address belonging to a user in the workspace",
+                        "type": "string",
+                        "name": "email",
+                        "in": "query"
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "slackAuth": [
+                            "users:read.email"
+                        ]
+                    }
+                ],
+                "externalDocs": {
+                    "url": "https://api.slack.com/methods/users.lookupByEmail",
+                    "description": "API method documentation"
+                },
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "operationId": "users_lookupByEmail"
             }
         },
         "/reactions.list": {
@@ -4102,6 +4287,7 @@
                                         "not_authed",
                                         "invalid_auth",
                                         "account_inactive",
+                                        "no_permission",
                                         "invalid_arg_name",
                                         "invalid_array_arg",
                                         "invalid_charset",
@@ -5206,15 +5392,15 @@
                         "in": "query"
                     },
                     {
-                        "description": "Set to `true` to exclude archived channels from the list",
-                        "type": "boolean",
-                        "name": "exclude_archived",
-                        "in": "query"
-                    },
-                    {
                         "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000.",
                         "type": "integer",
                         "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Set to `true` to exclude archived channels from the list",
+                        "type": "boolean",
+                        "name": "exclude_archived",
                         "in": "query"
                     },
                     {
@@ -5385,7 +5571,31 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "type": "file",
+                                "ok": true,
+                                "file": {
+                                    "reactions": [
+                                        {
+                                            "count": 1,
+                                            "name": "stuck_out_tongue_winking_eye",
+                                            "users": [
+                                                "U2U85N1RV"
+                                            ]
+                                        }
+                                    ],
+                                    "name": "computer.gif",
+                                    "created": 1507850315,
+                                    "timestamp": 1507850315,
+                                    "title": "computer.gif",
+                                    "channels": [
+                                        "C2U7V2YA2"
+                                    ],
+                                    "ims": [],
+                                    "comments_count": 1,
+                                    "user": "U2U85N1RV",
+                                    "groups": [],
+                                    "id": "F7H0D7ZA4"
+                                }
                             }
                         }
                     }
@@ -5502,7 +5712,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "channel_not_found"
                             }
                         }
                     },
@@ -5537,7 +5747,28 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "has_more": false,
+                                "messages": [
+                                    {
+                                        "text": "Hello",
+                                        "type": "message",
+                                        "ts": "1358546515.000008",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "text": "World",
+                                        "is_starred": true,
+                                        "type": "message",
+                                        "ts": "1358546515.000007",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "type": "something_else",
+                                        "ts": "1358546515.000007"
+                                    }
+                                ],
+                                "ok": true,
+                                "latest": "1358547726.000003"
                             }
                         }
                     }
@@ -5615,16 +5846,47 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from pins.add method",
+                            "title": "pins.add error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "bad_timestamp",
+                                        "file_not_found",
+                                        "file_comment_not_found",
+                                        "message_not_found",
+                                        "channel_not_found",
+                                        "no_item_specified",
+                                        "already_pinned",
+                                        "permission_denied",
+                                        "file_not_shared",
+                                        "not_pinnable",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -5638,8 +5900,8 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from pins.add method",
+                            "title": "pins.add schema",
                             "required": [
                                 "ok"
                             ],
@@ -5843,9 +6105,9 @@
                         "description": "Standard success response",
                         "examples": {
                             "application/json": {
-                                "permalink": "https://ghostbusters.slack.com/archives/C1H9RESGL/p135854651500000",
+                                "permalink": "https://ghostbusters.slack.com/archives/C1H9RESGA/p135854651500008",
                                 "ok": true,
-                                "channel": "C1H9RESGL"
+                                "channel": "C1H9RESGA"
                             }
                         }
                     }
@@ -6804,16 +7066,44 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from pins.remove method",
+                            "title": "pins.remove error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "bad_timestamp",
+                                        "file_not_found",
+                                        "file_comment_not_found",
+                                        "message_not_found",
+                                        "no_item_specified",
+                                        "not_pinned",
+                                        "permission_denied",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_typ",
+                                        "missing_post_typ",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeou",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -6827,8 +7117,8 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from pins.remove method",
+                            "title": "pins.remove schema",
                             "required": [
                                 "ok"
                             ],
@@ -6910,16 +7200,40 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response files.delete method",
+                            "title": "files.delete error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "file_not_found",
+                                        "file_deleted",
+                                        "cant_delete_file",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -6933,8 +7247,8 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response files.delete method",
+                            "title": "files.delete schema",
                             "required": [
                                 "ok"
                             ],
@@ -7688,7 +8002,44 @@
             "get": {
                 "responses": {
                     "default": {
-                        "schema": {},
+                        "schema": {
+                            "description": "Schema for error response files.info method",
+                            "title": "files.info error schema",
+                            "required": [
+                                "ok",
+                                "error"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "file_not_found",
+                                        "file_deleted",
+                                        "timezone_count_failed",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Typical error response",
                         "examples": {
                             "application/json": {
@@ -8823,7 +9174,8 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "chat:write"
+                            "chat:write:user",
+                            "chat:write:bot"
                         ]
                     }
                 ],
@@ -9020,20 +9372,7 @@
             "get": {
                 "responses": {
                     "default": {
-                        "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
-                            "required": [
-                                "ok"
-                            ],
-                            "additionalProperties": true,
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
-                                }
-                            }
-                        },
+                        "schema": {},
                         "description": "Typical error response when there are no mappings to provide",
                         "examples": {
                             "application/json": {
@@ -9044,16 +9383,38 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Bulk exchange local workspace user IDs for global IDs",
+                            "title": "HTTP 200 response schema for migration.exchange",
                             "required": [
-                                "ok"
+                                "ok",
+                                "team_id",
+                                "enterprise_id"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "team_id": {
+                                    "type": "string",
+                                    "title": "The workspace/team ID containing the mapped users"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "enterprise_id": {
+                                    "type": "string",
+                                    "title": "The enterprise grid organization ID containing the workspace/team."
+                                },
+                                "invalid_user_ids": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array",
+                                    "title": "A list of User IDs that cannot be mapped or found"
+                                },
+                                "user_id_map": {
+                                    "additionalProperties": true,
+                                    "type": "object",
+                                    "title": "A mapping of provided user IDs with mapped user IDs"
                                 }
                             }
                         },
@@ -9414,7 +9775,8 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "chat:write"
+                            "chat:write:user",
+                            "chat:write:bot"
                         ]
                     }
                 ],
@@ -9451,7 +9813,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "channel_not_found"
                             }
                         }
                     },
@@ -9473,7 +9835,28 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "has_more": false,
+                                "messages": [
+                                    {
+                                        "text": "Hello",
+                                        "type": "message",
+                                        "ts": "1358546515.000008",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "text": "World",
+                                        "is_starred": true,
+                                        "type": "message",
+                                        "ts": "1358546515.000007",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "type": "something_else",
+                                        "ts": "1358546515.000007"
+                                    }
+                                ],
+                                "ok": true,
+                                "latest": "1358547726.000003"
                             }
                         }
                     }
@@ -9564,11 +9947,11 @@
                                 }
                             }
                         },
-                        "description": "Typical error response",
+                        "description": "Standard failure response when trigger_id is invalid",
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "invalid_trigger_id"
                             }
                         }
                     },
@@ -9587,7 +9970,7 @@
                                 }
                             }
                         },
-                        "description": "Typical success response",
+                        "description": "Standard success response when used with a user token",
                         "examples": {
                             "application/json": {
                                 "ok": true
@@ -10497,41 +10880,25 @@
                         "description": "Typical success response containing a channel's messages",
                         "examples": {
                             "application/json": {
-                                "ok": true,
-                                "response_metadata": {
-                                    "next_cursor": "bmV4dF90czoxNTAyMTI2Mzk0MjE2NzEw"
-                                },
                                 "has_more": true,
                                 "messages": [
                                     {
                                         "text": "I find you punny and would like to smell your nose letter",
                                         "type": "message",
                                         "user": "U012AB3CDE",
-                                        "ts": "1502126499.221215"
+                                        "ts": "1512085950.000216"
                                     },
                                     {
-                                        "text": "Isn't this whether dreadful? <https://badpuns.example.com/puns/123>",
+                                        "text": "What, you want to smell my shoes better?",
                                         "type": "message",
                                         "user": "U061F7AUR",
-                                        "ts": "1502126439.218404",
-                                        "attachments": [
-                                            {
-                                                "thumb_height": 700,
-                                                "service_icon": "https://badpuns.example.com/puns.png",
-                                                "thumb_width": 1920,
-                                                "title": "Leg end nary a laugh, Ink.",
-                                                "service_name": "Leg end nary a laugh, Ink.",
-                                                "title_link": "https://badpuns.example.com/puns/123",
-                                                "text": "This is likely a pun about the weather.",
-                                                "id": 1,
-                                                "fallback": "We're withholding a pun from you",
-                                                "thumb_url": "https://badpuns.example.com/puns/123.png",
-                                                "from_url": "https://badpuns.example.com/puns/123"
-                                            }
-                                        ]
+                                        "ts": "1512104434.000490"
                                     }
                                 ],
-                                "unread_count_display": 0,
+                                "ok": true,
+                                "response_metadata": {
+                                    "next_cursor": "bmV4dF90czoxNTEyMDg1ODYxMDAwNTQz"
+                                },
                                 "pin_count": 0
                             }
                         }
@@ -10539,6 +10906,12 @@
                 },
                 "description": "Fetches a conversation's history of messages and events.",
                 "parameters": [
+                    {
+                        "description": "Include messages with latest or oldest timestamp in results only when either timestamp is specified.",
+                        "type": "boolean",
+                        "name": "inclusive",
+                        "in": "query"
+                    },
                     {
                         "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail.",
                         "type": "string",
@@ -10789,7 +11162,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "channel_not_found"
                             }
                         }
                     },
@@ -10811,6 +11184,25 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
+                                "messages": [
+                                    {
+                                        "text": "Hello",
+                                        "type": "message",
+                                        "ts": "1358546515.000008",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "text": "World",
+                                        "is_starred": true,
+                                        "type": "message",
+                                        "ts": "1358546515.000007",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "type": "something_else",
+                                        "ts": "1358546515.000007"
+                                    }
+                                ],
                                 "ok": true
                             }
                         }
@@ -12182,7 +12574,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "channel_not_found"
                             }
                         }
                     },
@@ -12217,7 +12609,28 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "has_more": false,
+                                "messages": [
+                                    {
+                                        "text": "Hello",
+                                        "type": "message",
+                                        "ts": "1358546515.000008",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "text": "World",
+                                        "is_starred": true,
+                                        "type": "message",
+                                        "ts": "1358546515.000007",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "type": "something_else",
+                                        "ts": "1358546515.000007"
+                                    }
+                                ],
+                                "ok": true,
+                                "latest": "1358547726.000003"
                             }
                         }
                     }
@@ -13193,7 +13606,7 @@
                     "default": {
                         "schema": {
                             "description": "Schema for error response from files.comments.add method",
-                            "title": "files.comments.edit error schema",
+                            "title": "files.comments.add error schema",
                             "required": [
                                 "ok",
                                 "error"
@@ -13213,6 +13626,7 @@
                                         "not_authed",
                                         "invalid_auth",
                                         "account_inactive",
+                                        "no_permission",
                                         "invalid_arg_name",
                                         "invalid_array_arg",
                                         "invalid_charset",
@@ -13618,7 +14032,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "channel_not_found"
                             }
                         }
                     },
@@ -13640,6 +14054,25 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
+                                "messages": [
+                                    {
+                                        "text": "Hello",
+                                        "type": "message",
+                                        "ts": "1358546515.000008",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "text": "World",
+                                        "is_starred": true,
+                                        "type": "message",
+                                        "ts": "1358546515.000007",
+                                        "user": "U2147483896"
+                                    },
+                                    {
+                                        "type": "something_else",
+                                        "ts": "1358546515.000007"
+                                    }
+                                ],
                                 "ok": true
                             }
                         }
@@ -13707,11 +14140,11 @@
                                 }
                             }
                         },
-                        "description": "Typical error response",
+                        "description": "Typical error response, before getting to any possible validation errors.",
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "missing_trigger"
                             }
                         }
                     },
@@ -13730,7 +14163,7 @@
                                 }
                             }
                         },
-                        "description": "Typical success response",
+                        "description": "Typical success response is quite minimal.",
                         "examples": {
                             "application/json": {
                                 "ok": true
@@ -15530,7 +15963,8 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "chat:write"
+                            "chat:write:user",
+                            "chat:write:bot"
                         ]
                     }
                 ],
@@ -16308,7 +16742,13 @@
                 "description": "Retrieve a thread of messages posted to a conversation",
                 "parameters": [
                     {
-                        "description": "Unique identifier of a thread's parent message",
+                        "description": "Include messages with latest or oldest timestamp in results only when either timestamp is specified.",
+                        "type": "boolean",
+                        "name": "inclusive",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Unique identifier of a thread's parent message.",
                         "type": "number",
                         "name": "ts",
                         "in": "query"
@@ -16332,9 +16772,21 @@
                         "in": "query"
                     },
                     {
-                        "description": "Conversation ID to fetch thread from",
+                        "description": "Start of time range of messages to include in results.",
+                        "type": "number",
+                        "name": "oldest",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Conversation ID to fetch thread from.",
                         "type": "string",
                         "name": "channel",
+                        "in": "query"
+                    },
+                    {
+                        "description": "End of time range of messages to include in results.",
+                        "type": "number",
+                        "name": "latest",
                         "in": "query"
                     }
                 ],
@@ -16483,11 +16935,13 @@
             "authorizationUrl": "https://slack.com/oauth/authorize",
             "scopes": {
                 "dnd:read": "dnd:read",
+                "users:read.email": "users:read.email",
                 "im:read": "im:read",
                 "channels:write": "channels:write",
+                "chat:write:bot": "Author messages as a bot",
                 "chat:write:user": "chat:write:user",
                 "identity.basic": "identity.basic",
-                "conversations:write": "conversations:write",
+                "bot": "Bot user scope",
                 "tokens.basic": "tokens.basic",
                 "groups:write": "groups:write",
                 "conversations:history": "conversations:history",
@@ -16519,7 +16973,7 @@
                 "admin": "admin",
                 "groups:read": "groups:read",
                 "chat:write": "chat:write",
-                "bot": "Bot user scope",
+                "conversations:write": "conversations:write",
                 "users.profile:write": "users.profile:write",
                 "mpim:history": "mpim:history",
                 "reactions:write": "reactions:write",
