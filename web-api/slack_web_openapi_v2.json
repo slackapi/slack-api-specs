@@ -1,6 +1,6 @@
 {
     "info": {
-        "version": "1.0.3",
+        "version": "1.0.4",
         "description": "One way to interact with the Slack platform is its HTTP RPC-based Web API, a collection of methods requiring OAuth 2.0-based user, bot, or workspace tokens blessed with related OAuth scopes.",
         "title": "Slack Web API"
     },
@@ -1068,7 +1068,7 @@
                                             "type": "boolean"
                                         },
                                         "user": {
-                                            "$ref": "#/definitions/defs_user"
+                                            "$ref": "#/definitions/defs_user_id"
                                         },
                                         "unread_count_display": {
                                             "type": "number"
@@ -1089,7 +1089,10 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "ok": true,
+                                "channel": {
+                                    "id": "D947RLWRX"
+                                }
                             }
                         }
                     }
@@ -2233,166 +2236,96 @@
                 "operationId": "mpim_close"
             }
         },
-        "/conversations.join": {
-            "post": {
+        "/users.profile.get": {
+            "get": {
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Schema for error response from conversations.join method",
-                            "title": "conversations.join error schema",
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default error template",
                             "required": [
-                                "ok",
-                                "error"
+                                "ok"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
-                                "needed": {
-                                    "type": "string"
-                                },
-                                "error": {
-                                    "enum": [
-                                        "method_not_supported_for_channel_type",
-                                        "missing_scope",
-                                        "channel_not_found",
-                                        "is_archived",
-                                        "not_authed",
-                                        "invalid_auth",
-                                        "account_inactive",
-                                        "user_is_bot",
-                                        "user_is_restricted",
-                                        "user_is_ultra_restricted",
-                                        "invalid_arg_name",
-                                        "invalid_array_arg",
-                                        "invalid_charset",
-                                        "invalid_form_data",
-                                        "invalid_post_type",
-                                        "missing_post_type",
-                                        "invalid_json",
-                                        "json_not_object",
-                                        "request_timeout",
-                                        "upgrade_required",
-                                        "team_added_to_org",
-                                        "missing_charset",
-                                        "superfluous_charset"
-                                    ],
-                                    "type": "string"
-                                },
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_false"
-                                },
-                                "provided": {
-                                    "type": "string"
+                                    "$ref": "#/definitions/defs_ok_true"
                                 }
                             }
                         },
-                        "description": "Typical error response if the conversation is archived and cannot be joined",
+                        "description": "Typical error response",
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "is_archived"
+                                "error": "user_not_found"
                             }
                         }
                     },
                     "200": {
                         "schema": {
-                            "description": "Schema for successful response from conversations.join method",
-                            "title": "conversations.join success schema",
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default success template",
                             "required": [
-                                "ok",
-                                "channel"
+                                "ok"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
-                                "warning": {
-                                    "type": "string"
-                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
-                                },
-                                "channel": {
-                                    "$ref": "#/definitions/objs_conversation"
-                                },
-                                "response_metadata": {
-                                    "type": "object",
-                                    "properties": {
-                                        "warnings": {
-                                            "minItems": 1,
-                                            "uniqueItems": true,
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    "title": "Response metadata"
                                 }
                             }
                         },
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "warning": "already_in_channel",
-                                "ok": true,
-                                "response_metadata": {
-                                    "warnings": [
-                                        "already_in_channel"
-                                    ]
+                                "profile": {
+                                    "display_name": "spengler",
+                                    "status_emoji": ":books:",
+                                    "team": "T012AB3C4",
+                                    "real_name": "Egon Spengler",
+                                    "image_24": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                    "real_name_normalized": "Egon Spengler",
+                                    "image_512": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                    "display_name_normalized": "spengler",
+                                    "image_32": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                    "image_48": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                    "image_72": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
+                                    "avatar_hash": "ge3b51ca72de",
+                                    "status_text": "Print is dead",
+                                    "email": "spengler@ghostbusters.example.com",
+                                    "image_192": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg"
                                 },
-                                "channel": {
-                                    "is_general": true,
-                                    "name_normalized": "general",
-                                    "is_channel": true,
-                                    "creator": "U061F7AUR",
-                                    "is_member": true,
-                                    "is_archived": false,
-                                    "topic": {
-                                        "last_set": 0,
-                                        "value": "Which widget do you worry about?",
-                                        "creator": ""
-                                    },
-                                    "is_im": false,
-                                    "is_ext_shared": false,
-                                    "previous_names": [],
-                                    "id": "C061EG9SL",
-                                    "is_org_shared": false,
-                                    "is_pending_ext_shared": false,
-                                    "is_mpim": false,
-                                    "is_group": false,
-                                    "purpose": {
-                                        "last_set": 0,
-                                        "value": "For widget discussion",
-                                        "creator": ""
-                                    },
-                                    "is_private": false,
-                                    "is_shared": false,
-                                    "name": "general",
-                                    "created": 1449252889,
-                                    "pending_shared": [],
-                                    "unlinked": 0
-                                }
+                                "ok": true
                             }
                         }
                     }
                 },
-                "description": "Joins an existing conversation.",
+                "description": "Retrieves a user's profile information.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `channels:write`",
+                        "description": "Authentication token. Requires scope: `users.profile:read`",
                         "type": "string",
                         "name": "token",
-                        "in": "header"
+                        "in": "query"
                     },
                     {
-                        "description": "ID of conversation to join",
+                        "description": "Include labels for each ID in custom profile fields",
+                        "type": "boolean",
+                        "name": "include_labels",
+                        "in": "query"
+                    },
+                    {
+                        "description": "User to retrieve profile info for",
                         "type": "string",
-                        "name": "channel",
-                        "in": "formData"
+                        "name": "user",
+                        "in": "query"
                     }
                 ],
                 "tags": [
-                    "conversations"
+                    "users.profile",
+                    "users"
                 ],
                 "produces": [
                     "application/json"
@@ -2400,19 +2333,18 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "channels:write"
+                            "users.profile:read"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/conversations.join",
+                    "url": "https://api.slack.com/methods/users.profile.get",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded",
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
-                "operationId": "conversations_join"
+                "operationId": "users_profile_get"
             }
         },
         "/channels.history": {
@@ -3160,95 +3092,7 @@
                                     "$ref": "#/definitions/defs_ok_true"
                                 },
                                 "user": {
-                                    "additionalProperties": true,
-                                    "required": [
-                                        "id",
-                                        "team_id",
-                                        "name",
-                                        "deleted",
-                                        "color",
-                                        "real_name",
-                                        "tz",
-                                        "tz_label",
-                                        "tz_offset",
-                                        "profile",
-                                        "is_admin",
-                                        "is_owner",
-                                        "is_primary_owner",
-                                        "is_restricted",
-                                        "is_ultra_restricted",
-                                        "is_bot",
-                                        "updated",
-                                        "is_app_user",
-                                        "has_2fa"
-                                    ],
-                                    "type": "object",
-                                    "properties": {
-                                        "profile": {
-                                            "$ref": "#/definitions/objs_user_profile"
-                                        },
-                                        "updated": {
-                                            "type": "number"
-                                        },
-                                        "tz": {
-                                            "type": [
-                                                "null",
-                                                "string"
-                                            ]
-                                        },
-                                        "name": {
-                                            "type": "string"
-                                        },
-                                        "deleted": {
-                                            "type": "boolean"
-                                        },
-                                        "is_app_user": {
-                                            "type": "boolean"
-                                        },
-                                        "is_bot": {
-                                            "type": "boolean"
-                                        },
-                                        "tz_label": {
-                                            "type": "string"
-                                        },
-                                        "real_name": {
-                                            "type": "string"
-                                        },
-                                        "locale": {
-                                            "type": "string"
-                                        },
-                                        "team_id": {
-                                            "$ref": "#/definitions/defs_team"
-                                        },
-                                        "is_admin": {
-                                            "type": "boolean"
-                                        },
-                                        "is_ultra_restricted": {
-                                            "type": "boolean"
-                                        },
-                                        "is_owner": {
-                                            "type": "boolean"
-                                        },
-                                        "is_restricted": {
-                                            "type": "boolean"
-                                        },
-                                        "tz_offset": {
-                                            "type": "number"
-                                        },
-                                        "has_2fa": {
-                                            "type": "boolean"
-                                        },
-                                        "id": {
-                                            "$ref": "#/definitions/defs_user"
-                                        },
-                                        "color": {
-                                            "pattern": "^[a-fA-F0-9]{6}$",
-                                            "type": "string"
-                                        },
-                                        "is_primary_owner": {
-                                            "type": "boolean"
-                                        }
-                                    }
+                                    "$ref": "#/definitions/objs_user"
                                 }
                             }
                         },
@@ -3360,7 +3204,23 @@
                                 },
                                 "error": {
                                     "enum": [
-                                        "user_not_found"
+                                        "users_not_found",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required",
+                                        "fatal_error"
                                     ],
                                     "type": "string"
                                 }
@@ -3370,7 +3230,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "user_not_found"
+                                "error": "users_not_found"
                             }
                         }
                     },
@@ -3389,7 +3249,7 @@
                                     "$ref": "#/definitions/defs_ok_true"
                                 },
                                 "user": {
-                                    "$ref": "#/definitions/defs_user"
+                                    "$ref": "#/definitions/objs_user"
                                 }
                             }
                         },
@@ -3481,16 +3341,39 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from reactions.list method",
+                            "title": "reactions.list error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "user_not_found",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactiv",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required",
+                                        "fatal_error"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -3504,14 +3387,90 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from reactions.list method",
+                            "title": "reactions.list schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "items"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "items": {
+                                    "items": {
+                                        "items": [
+                                            {
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "type",
+                                                    "channel",
+                                                    "message"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "message": {
+                                                        "$ref": "#/definitions/objs_message"
+                                                    },
+                                                    "type": {
+                                                        "enum": [
+                                                            "message"
+                                                        ],
+                                                        "type": "string"
+                                                    },
+                                                    "channel": {
+                                                        "$ref": "#/definitions/defs_channel"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "type",
+                                                    "file"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "type": {
+                                                        "enum": [
+                                                            "file"
+                                                        ],
+                                                        "type": "string"
+                                                    },
+                                                    "file": {
+                                                        "$ref": "#/definitions/objs_file"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "type",
+                                                    "file",
+                                                    "comment"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "comment": {
+                                                        "$ref": "#/definitions/objs_comment"
+                                                    },
+                                                    "type": {
+                                                        "enum": [
+                                                            "file_comment"
+                                                        ],
+                                                        "type": "string"
+                                                    },
+                                                    "file": {
+                                                        "$ref": "#/definitions/objs_file"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "type": "array"
+                                },
+                                "paging": {
+                                    "$ref": "#/definitions/objs_paging"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
                                 }
@@ -4473,16 +4432,46 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from reactions.add method",
+                            "title": "reactions.add error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "bad_timestamp",
+                                        "file_not_found",
+                                        "file_comment_not_found",
+                                        "message_not_found",
+                                        "no_item_specified",
+                                        "invalid_name",
+                                        "already_reacted",
+                                        "too_many_emoji",
+                                        "too_many_reactions",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -4496,8 +4485,8 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from reactions.add method",
+                            "title": "reactions.add schema",
                             "required": [
                                 "ok"
                             ],
@@ -5532,16 +5521,41 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from reactions.get method",
+                            "title": "reactions.get error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "bad_timestamp",
+                                        "file_not_found",
+                                        "file_comment_not_found",
+                                        "message_not_found",
+                                        "no_item_specified",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -5555,18 +5569,85 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
-                            "required": [
-                                "ok"
-                            ],
-                            "additionalProperties": true,
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                            "items": [
+                                {
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "ok",
+                                        "type",
+                                        "channel",
+                                        "message"
+                                    ],
+                                    "properties": {
+                                        "ok": {
+                                            "$ref": "#/definitions/defs_ok_true"
+                                        },
+                                        "message": {
+                                            "$ref": "#/definitions/objs_message"
+                                        },
+                                        "type": {
+                                            "enum": [
+                                                "message"
+                                            ],
+                                            "type": "string"
+                                        },
+                                        "channel": {
+                                            "$ref": "#/definitions/defs_channel"
+                                        }
+                                    }
+                                },
+                                {
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "ok",
+                                        "type",
+                                        "file"
+                                    ],
+                                    "properties": {
+                                        "ok": {
+                                            "$ref": "#/definitions/defs_ok_true"
+                                        },
+                                        "type": {
+                                            "enum": [
+                                                "file"
+                                            ],
+                                            "type": "string"
+                                        },
+                                        "file": {
+                                            "$ref": "#/definitions/objs_file"
+                                        }
+                                    }
+                                },
+                                {
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "ok",
+                                        "type",
+                                        "file",
+                                        "comment"
+                                    ],
+                                    "properties": {
+                                        "comment": {
+                                            "$ref": "#/definitions/objs_comment"
+                                        },
+                                        "ok": {
+                                            "$ref": "#/definitions/defs_ok_true"
+                                        },
+                                        "type": {
+                                            "enum": [
+                                                "file_comment"
+                                            ],
+                                            "type": "string"
+                                        },
+                                        "file": {
+                                            "$ref": "#/definitions/objs_file"
+                                        }
+                                    }
                                 }
-                            }
+                            ],
+                            "type": "object",
+                            "description": "Schema for successful response from reactions.get method",
+                            "title": "reactions.get success schema"
                         },
                         "description": "Typical success response",
                         "examples": {
@@ -6115,7 +6196,7 @@
                 "description": "Retrieve a permalink URL for a specific extant message",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `tokens.basic`",
+                        "description": "Authentication token. Requires scope: `none`",
                         "type": "string",
                         "name": "token",
                         "in": "query"
@@ -6142,7 +6223,7 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "tokens.basic"
+                            "none"
                         ]
                     }
                 ],
@@ -6291,16 +6372,40 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from files.list method",
+                            "title": "files.list error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "user_not_found",
+                                        "unknown_type",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "user_is_bot",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -6314,14 +6419,27 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from files.list method",
+                            "title": "files.list schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "files",
+                                "paging"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "files": {
+                                    "minItems": 0,
+                                    "uniqueItems": true,
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/objs_file"
+                                    }
+                                },
+                                "paging": {
+                                    "$ref": "#/definitions/objs_paging"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
                                 }
@@ -6831,7 +6949,7 @@
                                     "uniqueItems": true,
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/definitions/defs_user"
+                                        "$ref": "#/definitions/defs_user_id"
                                     }
                                 },
                                 "response_metadata": {
@@ -7312,16 +7430,38 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from pins.list method",
+                            "title": "pins.list error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "channel_not_found",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -7335,18 +7475,117 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
-                            "required": [
-                                "ok"
-                            ],
-                            "additionalProperties": true,
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                            "items": [
+                                {
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "ok",
+                                        "items"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "uniqueItems": true,
+                                            "items": [
+                                                {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "comment": {
+                                                            "$ref": "#/definitions/objs_comment"
+                                                        },
+                                                        "type": {
+                                                            "enum": [
+                                                                "file_comment"
+                                                            ],
+                                                            "type": "string"
+                                                        },
+                                                        "file": {
+                                                            "$ref": "#/definitions/objs_file"
+                                                        },
+                                                        "created_by": {
+                                                            "$ref": "#/definitions/defs_user_id"
+                                                        },
+                                                        "created": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "title": "File Comment Pin"
+                                                },
+                                                {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "type": {
+                                                            "enum": [
+                                                                "file"
+                                                            ],
+                                                            "type": "string"
+                                                        },
+                                                        "file": {
+                                                            "$ref": "#/definitions/objs_file"
+                                                        },
+                                                        "created_by": {
+                                                            "$ref": "#/definitions/defs_user_id"
+                                                        },
+                                                        "created": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "title": "File Pin"
+                                                },
+                                                {
+                                                    "additionalProperties": true,
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "message": {
+                                                            "$ref": "#/definitions/objs_message"
+                                                        },
+                                                        "type": {
+                                                            "enum": [
+                                                                "message"
+                                                            ],
+                                                            "type": "string"
+                                                        },
+                                                        "channel": {
+                                                            "$ref": "#/definitions/defs_channel"
+                                                        },
+                                                        "created_by": {
+                                                            "$ref": "#/definitions/defs_user_id"
+                                                        },
+                                                        "created": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "title": "Message Pin"
+                                                }
+                                            ],
+                                            "type": "array"
+                                        },
+                                        "ok": {
+                                            "$ref": "#/definitions/defs_ok_true"
+                                        }
+                                    }
+                                },
+                                {
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "ok",
+                                        "count"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        },
+                                        "ok": {
+                                            "$ref": "#/definitions/defs_ok_true"
+                                        }
+                                    }
                                 }
-                            }
+                            ],
+                            "description": "Schema for successful response from pins.list method",
+                            "title": "pins.list success schema"
                         },
                         "description": "Typical success response",
                         "examples": {
@@ -8003,7 +8242,7 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Schema for error response files.info method",
+                            "description": "Schema for error response from files.info method",
                             "title": "files.info error schema",
                             "required": [
                                 "ok",
@@ -8050,7 +8289,7 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Schema for successful response files.info method",
+                            "description": "Schema for successful response from files.info method",
                             "title": "files.info schema",
                             "required": [
                                 "ok",
@@ -8266,7 +8505,7 @@
                                 "info": {
                                     "app_home": {
                                         "scopes": [
-                                            "chat:write:user",
+                                            "chat:write",
                                             "im:history",
                                             "im:read"
                                         ],
@@ -10023,8 +10262,8 @@
                 "operationId": "apps_permissions_request"
             }
         },
-        "/search.files": {
-            "get": {
+        "/channels.setPurpose": {
+            "post": {
                 "responses": {
                     "default": {
                         "schema": {
@@ -10045,7 +10284,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "No query passed"
+                                "error": "invalid_auth"
                             }
                         }
                     },
@@ -10067,131 +10306,35 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "files": {
-                                    "matches": [
-                                        {
-                                            "thumb_480_w": 480,
-                                            "reactions": [
-                                                {
-                                                    "count": 1,
-                                                    "name": "stuck_out_tongue_winking_eye",
-                                                    "users": [
-                                                        "U2U85N1RZ"
-                                                    ]
-                                                }
-                                            ],
-                                            "thumb_480_gif": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_480.gif",
-                                            "groups": [],
-                                            "filetype": "gif",
-                                            "channels": [],
-                                            "display_as_bot": false,
-                                            "id": "F7H0D7ZBB",
-                                            "size": 1639034,
-                                            "original_h": 313,
-                                            "thumb_360_w": 360,
-                                            "title": "computer.gif",
-                                            "url_private": "https://files.slack.com/files-pri/T2U81E2BB-F7H0D7ZBB/computer.gif",
-                                            "thumb_360": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_360.png",
-                                            "thumb_480": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_480.png",
-                                            "thumb_64": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_64.png",
-                                            "ims": [],
-                                            "score": "0.38899223746309",
-                                            "top_file": false,
-                                            "thumb_80": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_80.png",
-                                            "thumb_360_h": 225,
-                                            "preview": null,
-                                            "original_w": 500,
-                                            "username": "",
-                                            "timestamp": 1507850315,
-                                            "public_url_shared": false,
-                                            "editable": false,
-                                            "thumb_160": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_160.png",
-                                            "thumb_480_h": 300,
-                                            "thumb_360_gif": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_360.gif",
-                                            "user": "U2U85N1RZ",
-                                            "image_exif_rotation": 1,
-                                            "is_public": true,
-                                            "pretty_type": "GIF",
-                                            "is_external": false,
-                                            "mimetype": "image/gif",
-                                            "permalink_public": "https://slack-files.com/T2U81E2BB-F7H0D7ZBB-85b7f5557e",
-                                            "permalink": "https://eventsdemo.slack.com/files/U2U85N1RZ/F7H0D7ZBB/computer.gif",
-                                            "name": "computer.gif",
-                                            "created": 1507850315,
-                                            "url_private_download": "https://files.slack.com/files-pri/T2U81E2BB-F7H0D7ZBB/download/computer.gif",
-                                            "external_type": "",
-                                            "comments_count": 1,
-                                            "mode": "hosted",
-                                            "deanimate_gif": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_deanimate_gif.png"
-                                        }
-                                    ],
-                                    "pagination": {
-                                        "last": 3,
-                                        "total_count": 3,
-                                        "page_count": 1,
-                                        "per_page": 20,
-                                        "page": 1,
-                                        "first": 1
-                                    },
-                                    "total": 3,
-                                    "paging": {
-                                        "count": 20,
-                                        "total": 3,
-                                        "page": 1,
-                                        "pages": 1
-                                    }
-                                },
-                                "query": "computer.gif",
-                                "ok": true
+                                "ok": true,
+                                "purpose": "My special purpose"
                             }
                         }
                     }
                 },
-                "description": "Searches for files matching a query.",
+                "description": "Sets the purpose for a channel.",
                 "parameters": [
                     {
-                        "description": "Change sort direction to ascending (`asc`) or descending (`desc`).",
-                        "type": "string",
-                        "name": "sort_dir",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Search query. May contain booleans, etc.",
-                        "type": "string",
-                        "name": "query",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Return matches sorted by either `score` or `timestamp`.",
-                        "type": "string",
-                        "name": "sort",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Pass a value of `true` to enable query highlight markers (see below).",
-                        "type": "boolean",
-                        "name": "highlight",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "count",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Authentication token. Requires scope: `search:read`",
+                        "description": "Authentication token. Requires scope: `channels:write`",
                         "type": "string",
                         "name": "token",
-                        "in": "query"
+                        "in": "header"
                     },
                     {
+                        "description": "The new purpose",
                         "type": "string",
-                        "name": "page",
-                        "in": "query"
+                        "name": "purpose",
+                        "in": "formData"
+                    },
+                    {
+                        "description": "Channel to set the purpose of",
+                        "type": "string",
+                        "name": "channel",
+                        "in": "formData"
                     }
                 ],
                 "tags": [
-                    "search"
+                    "channels"
                 ],
                 "produces": [
                     "application/json"
@@ -10199,18 +10342,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "search:read"
+                            "channels:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/search.files",
+                    "url": "https://api.slack.com/methods/channels.setPurpose",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded"
+                    "application/x-www-form-urlencoded",
+                    "application/json"
                 ],
-                "operationId": "search_files"
+                "operationId": "channels_setPurpose"
             }
         },
         "/users.identity": {
@@ -10524,7 +10668,7 @@
                 "operationId": "groups_invite"
             }
         },
-        "/channels.unarchive": {
+        "/chat.meMessage": {
             "post": {
                 "responses": {
                     "default": {
@@ -10568,28 +10712,36 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "ok": true,
+                                "ts": "1417671948.000006",
+                                "channel": "C024BE7LR"
                             }
                         }
                     }
                 },
-                "description": "Unarchives a channel.",
+                "description": "Share a me message into a channel.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `channels:write`",
+                        "description": "Text of the message to send.",
+                        "type": "string",
+                        "name": "text",
+                        "in": "formData"
+                    },
+                    {
+                        "description": "Authentication token. Requires scope: `chat:write:user`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Channel to unarchive",
+                        "description": "Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.",
                         "type": "string",
                         "name": "channel",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "channels"
+                    "chat"
                 ],
                 "produces": [
                     "application/json"
@@ -10597,19 +10749,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "channels:write"
+                            "chat:write:user"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/channels.unarchive",
+                    "url": "https://api.slack.com/methods/chat.meMessage",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "channels_unarchive"
+                "operationId": "chat_meMessage"
             }
         },
         "/rtm.connect": {
@@ -10674,13 +10826,19 @@
                 "description": "Starts a Real Time Messaging session.",
                 "parameters": [
                     {
+                        "description": "Only deliver presence events when requested by subscription. See [presence subscriptions](/docs/presence-and-status#subscriptions).",
+                        "type": "boolean",
+                        "name": "presence_sub",
+                        "in": "query"
+                    },
+                    {
                         "description": "Authentication token. Requires scope: `rtm:stream`",
                         "type": "string",
                         "name": "token",
                         "in": "query"
                     },
                     {
-                        "description": "Only deliver presence events when requested by subscription. See [presence subscriptions](/docs/presence-and-status#subscriptions).",
+                        "description": "Batch presence deliveries via subscription. Enabling changes the shape of `presence_change` events. See [batch presence](/docs/presence-and-status#batching).",
                         "type": "boolean",
                         "name": "batch_presence_aware",
                         "in": "query"
@@ -11903,96 +12061,166 @@
                 "operationId": "usergroups_list"
             }
         },
-        "/users.profile.get": {
-            "get": {
+        "/conversations.join": {
+            "post": {
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from conversations.join method",
+                            "title": "conversations.join error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "needed": {
+                                    "type": "string"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "method_not_supported_for_channel_type",
+                                        "missing_scope",
+                                        "channel_not_found",
+                                        "is_archived",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "user_is_bot",
+                                        "user_is_restricted",
+                                        "user_is_ultra_restricted",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required",
+                                        "team_added_to_org",
+                                        "missing_charset",
+                                        "superfluous_charset"
+                                    ],
+                                    "type": "string"
+                                },
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "provided": {
+                                    "type": "string"
                                 }
                             }
                         },
-                        "description": "Typical error response",
+                        "description": "Typical error response if the conversation is archived and cannot be joined",
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "user_not_found"
+                                "error": "is_archived"
                             }
                         }
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from conversations.join method",
+                            "title": "conversations.join success schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "channel"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "warning": {
+                                    "type": "string"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "channel": {
+                                    "$ref": "#/definitions/objs_conversation"
+                                },
+                                "response_metadata": {
+                                    "type": "object",
+                                    "properties": {
+                                        "warnings": {
+                                            "minItems": 1,
+                                            "uniqueItems": true,
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "title": "Response metadata"
                                 }
                             }
                         },
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "profile": {
-                                    "display_name": "spengler",
-                                    "status_emoji": ":books:",
-                                    "team": "T012AB3C4",
-                                    "real_name": "Egon Spengler",
-                                    "image_24": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
-                                    "real_name_normalized": "Egon Spengler",
-                                    "image_512": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
-                                    "display_name_normalized": "spengler",
-                                    "image_32": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
-                                    "image_48": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
-                                    "image_72": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg",
-                                    "avatar_hash": "ge3b51ca72de",
-                                    "status_text": "Print is dead",
-                                    "email": "spengler@ghostbusters.example.com",
-                                    "image_192": "https://.../avatar/e3b51ca72dee4ef87916ae2b9240df50.jpg"
+                                "warning": "already_in_channel",
+                                "ok": true,
+                                "response_metadata": {
+                                    "warnings": [
+                                        "already_in_channel"
+                                    ]
                                 },
-                                "ok": true
+                                "channel": {
+                                    "is_general": true,
+                                    "name_normalized": "general",
+                                    "is_channel": true,
+                                    "creator": "U061F7AUR",
+                                    "is_member": true,
+                                    "is_archived": false,
+                                    "topic": {
+                                        "last_set": 0,
+                                        "value": "Which widget do you worry about?",
+                                        "creator": ""
+                                    },
+                                    "is_im": false,
+                                    "is_ext_shared": false,
+                                    "previous_names": [],
+                                    "id": "C061EG9SL",
+                                    "is_org_shared": false,
+                                    "is_pending_ext_shared": false,
+                                    "is_mpim": false,
+                                    "is_group": false,
+                                    "purpose": {
+                                        "last_set": 0,
+                                        "value": "For widget discussion",
+                                        "creator": ""
+                                    },
+                                    "is_private": false,
+                                    "is_shared": false,
+                                    "name": "general",
+                                    "created": 1449252889,
+                                    "pending_shared": [],
+                                    "unlinked": 0
+                                }
                             }
                         }
                     }
                 },
-                "description": "Retrieves a user's profile information.",
+                "description": "Joins an existing conversation.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `users.profile:read`",
+                        "description": "Authentication token. Requires scope: `channels:write`",
                         "type": "string",
                         "name": "token",
-                        "in": "query"
+                        "in": "header"
                     },
                     {
-                        "description": "Include labels for each ID in custom profile fields",
-                        "type": "boolean",
-                        "name": "include_labels",
-                        "in": "query"
-                    },
-                    {
-                        "description": "User to retrieve profile info for",
+                        "description": "ID of conversation to join",
                         "type": "string",
-                        "name": "user",
-                        "in": "query"
+                        "name": "channel",
+                        "in": "formData"
                     }
                 ],
                 "tags": [
-                    "users.profile",
-                    "users"
+                    "conversations"
                 ],
                 "produces": [
                     "application/json"
@@ -12000,18 +12228,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "users.profile:read"
+                            "channels:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/users.profile.get",
+                    "url": "https://api.slack.com/methods/conversations.join",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded"
+                    "application/x-www-form-urlencoded",
+                    "application/json"
                 ],
-                "operationId": "users_profile_get"
+                "operationId": "conversations_join"
             }
         },
         "/groups.open": {
@@ -12256,7 +12485,7 @@
                                 }
                             }
                         },
-                        "description": "Typical success response for a public channel",
+                        "description": "Typical success response for a public channel. (Also, a response from a private channel and a multi-party IM is very similar to this example.)",
                         "examples": {
                             "application/json": {
                                 "ok": true,
@@ -12351,7 +12580,7 @@
                 "operationId": "conversations_info"
             }
         },
-        "/chat.meMessage": {
+        "/channels.unarchive": {
             "post": {
                 "responses": {
                     "default": {
@@ -12395,36 +12624,28 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true,
-                                "ts": "1417671948.000006",
-                                "channel": "C024BE7LR"
+                                "ok": true
                             }
                         }
                     }
                 },
-                "description": "Share a me message into a channel.",
+                "description": "Unarchives a channel.",
                 "parameters": [
                     {
-                        "description": "Text of the message to send.",
-                        "type": "string",
-                        "name": "text",
-                        "in": "formData"
-                    },
-                    {
-                        "description": "Authentication token. Requires scope: `chat:write:user`",
+                        "description": "Authentication token. Requires scope: `channels:write`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.",
+                        "description": "Channel to unarchive",
                         "type": "string",
                         "name": "channel",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "chat"
+                    "channels"
                 ],
                 "produces": [
                     "application/json"
@@ -12432,19 +12653,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "chat:write:user"
+                            "channels:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/chat.meMessage",
+                    "url": "https://api.slack.com/methods/channels.unarchive",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "chat_meMessage"
+                "operationId": "channels_unarchive"
             }
         },
         "/dnd.endSnooze": {
@@ -12951,13 +13172,19 @@
                         "in": "query"
                     },
                     {
+                        "description": "Only deliver presence events when requested by subscription. See [presence subscriptions](/docs/presence-and-status#subscriptions).",
+                        "type": "boolean",
+                        "name": "presence_sub",
+                        "in": "query"
+                    },
+                    {
                         "description": "Skip unread counts for each channel (improves performance).",
                         "type": "boolean",
                         "name": "no_unreads",
                         "in": "query"
                     },
                     {
-                        "description": "Only deliver presence events when requested by subscription. See [presence subscriptions](/docs/presence-and-status#subscriptions).",
+                        "description": "Batch presence deliveries via subscription. Enabling changes the shape of `presence_change` events. See [batch presence](/docs/presence-and-status#batching).",
                         "type": "boolean",
                         "name": "batch_presence_aware",
                         "in": "query"
@@ -13311,16 +13538,45 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from reactions.remove method",
+                            "title": "reactions.remove error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "bad_timestamp",
+                                        "file_not_found",
+                                        "file_comment_not_found",
+                                        "message_not_found",
+                                        "no_item_specified",
+                                        "invalid_name",
+                                        "no_reaction",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required",
+                                        "fatal_error"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -13334,8 +13590,8 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from reactions.remove method",
+                            "title": "reactions.remove schema",
                             "required": [
                                 "ok"
                             ],
@@ -13915,8 +14171,8 @@
                 "operationId": "im_list"
             }
         },
-        "/channels.setPurpose": {
-            "post": {
+        "/search.files": {
+            "get": {
                 "responses": {
                     "default": {
                         "schema": {
@@ -13937,7 +14193,7 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "No query passed"
                             }
                         }
                     },
@@ -13959,35 +14215,131 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true,
-                                "purpose": "My special purpose"
+                                "files": {
+                                    "matches": [
+                                        {
+                                            "thumb_480_w": 480,
+                                            "reactions": [
+                                                {
+                                                    "count": 1,
+                                                    "name": "stuck_out_tongue_winking_eye",
+                                                    "users": [
+                                                        "U2U85N1RZ"
+                                                    ]
+                                                }
+                                            ],
+                                            "thumb_480_gif": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_480.gif",
+                                            "groups": [],
+                                            "filetype": "gif",
+                                            "channels": [],
+                                            "display_as_bot": false,
+                                            "id": "F7H0D7ZBB",
+                                            "size": 1639034,
+                                            "original_h": 313,
+                                            "thumb_360_w": 360,
+                                            "title": "computer.gif",
+                                            "url_private": "https://files.slack.com/files-pri/T2U81E2BB-F7H0D7ZBB/computer.gif",
+                                            "thumb_360": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_360.png",
+                                            "thumb_480": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_480.png",
+                                            "thumb_64": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_64.png",
+                                            "ims": [],
+                                            "score": "0.38899223746309",
+                                            "top_file": false,
+                                            "thumb_80": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_80.png",
+                                            "thumb_360_h": 225,
+                                            "preview": null,
+                                            "original_w": 500,
+                                            "username": "",
+                                            "timestamp": 1507850315,
+                                            "public_url_shared": false,
+                                            "editable": false,
+                                            "thumb_160": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_160.png",
+                                            "thumb_480_h": 300,
+                                            "thumb_360_gif": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_360.gif",
+                                            "user": "U2U85N1RZ",
+                                            "image_exif_rotation": 1,
+                                            "is_public": true,
+                                            "pretty_type": "GIF",
+                                            "is_external": false,
+                                            "mimetype": "image/gif",
+                                            "permalink_public": "https://slack-files.com/T2U81E2BB-F7H0D7ZBB-85b7f5557e",
+                                            "permalink": "https://eventsdemo.slack.com/files/U2U85N1RZ/F7H0D7ZBB/computer.gif",
+                                            "name": "computer.gif",
+                                            "created": 1507850315,
+                                            "url_private_download": "https://files.slack.com/files-pri/T2U81E2BB-F7H0D7ZBB/download/computer.gif",
+                                            "external_type": "",
+                                            "comments_count": 1,
+                                            "mode": "hosted",
+                                            "deanimate_gif": "https://files.slack.com/files-tmb/T2U81E2BB-F7H0D7ZBB-21624821e6/computer_deanimate_gif.png"
+                                        }
+                                    ],
+                                    "pagination": {
+                                        "last": 3,
+                                        "total_count": 3,
+                                        "page_count": 1,
+                                        "per_page": 20,
+                                        "page": 1,
+                                        "first": 1
+                                    },
+                                    "total": 3,
+                                    "paging": {
+                                        "count": 20,
+                                        "total": 3,
+                                        "page": 1,
+                                        "pages": 1
+                                    }
+                                },
+                                "query": "computer.gif",
+                                "ok": true
                             }
                         }
                     }
                 },
-                "description": "Sets the purpose for a channel.",
+                "description": "Searches for files matching a query.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `channels:write`",
+                        "description": "Change sort direction to ascending (`asc`) or descending (`desc`).",
+                        "type": "string",
+                        "name": "sort_dir",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Search query. May contain booleans, etc.",
+                        "type": "string",
+                        "name": "query",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Return matches sorted by either `score` or `timestamp`.",
+                        "type": "string",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Pass a value of `true` to enable query highlight markers (see below).",
+                        "type": "boolean",
+                        "name": "highlight",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "count",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authentication token. Requires scope: `search:read`",
                         "type": "string",
                         "name": "token",
-                        "in": "header"
+                        "in": "query"
                     },
                     {
-                        "description": "The new purpose",
                         "type": "string",
-                        "name": "purpose",
-                        "in": "formData"
-                    },
-                    {
-                        "description": "Channel to set the purpose of",
-                        "type": "string",
-                        "name": "channel",
-                        "in": "formData"
+                        "name": "page",
+                        "in": "query"
                     }
                 ],
                 "tags": [
-                    "channels"
+                    "search"
                 ],
                 "produces": [
                     "application/json"
@@ -13995,19 +14347,18 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "channels:write"
+                            "search:read"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/channels.setPurpose",
+                    "url": "https://api.slack.com/methods/search.files",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded",
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
-                "operationId": "channels_setPurpose"
+                "operationId": "search_files"
             }
         },
         "/mpim.replies": {
@@ -14352,16 +14703,39 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from users.list method",
+                            "title": "users.list error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "invalid_cursor",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required",
+                                        "fatal_error"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -14375,16 +14749,29 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from users.list method",
+                            "title": "users.list schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "members",
+                                "cache_ts"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "cache_ts": {
+                                    "type": "integer"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "members": {
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/objs_user"
+                                    }
                                 }
                             }
                         },
@@ -14482,7 +14869,7 @@
                 "description": "Lists all users in a Slack team.",
                 "parameters": [
                     {
-                        "description": "Whether to include presence data in the output. Setting this to `false` improves performance, especially with large teams.",
+                        "description": "Deprecated. Whether to include presence data in the output. Defaults to `false`. Setting this to `true` reduces performance, especially with large teams.",
                         "type": "boolean",
                         "name": "presence",
                         "in": "query"
@@ -14568,7 +14955,7 @@
                                                 "$ref": "#/definitions/defs_ok_false"
                                             },
                                             "user": {
-                                                "$ref": "#/definitions/defs_user"
+                                                "$ref": "#/definitions/defs_user_id"
                                             },
                                             "error": {
                                                 "enum": [
@@ -14795,6 +15182,7 @@
                                     "enum": [
                                         "not_authed",
                                         "invalid_auth",
+                                        "token_revoked",
                                         "account_inactive",
                                         "invalid_arg_name",
                                         "invalid_array_arg",
@@ -14850,7 +15238,7 @@
                                     "type": "string"
                                 },
                                 "user_id": {
-                                    "$ref": "#/definitions/defs_user"
+                                    "$ref": "#/definitions/defs_user_id"
                                 }
                             }
                         },
@@ -15546,21 +15934,50 @@
                 "operationId": "mpim_list"
             }
         },
-        "/groups.unarchive": {
-            "post": {
+        "/conversations.replies": {
+            "get": {
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from conversations.replies method",
+                            "title": "conversations.replies error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "needed": {
+                                    "type": "string"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "missing_scope",
+                                        "channel_not_found",
+                                        "thread_not_found",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
+                                },
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "provided": {
+                                    "type": "string"
                                 }
                             }
                         },
@@ -15568,50 +15985,275 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "invalid_auth"
+                                "error": "thread_not_found"
                             }
                         }
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from conversations.replies method",
+                            "title": "conversations.replies success schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "messages"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "has_more": {
+                                    "type": "boolean"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "messages": {
+                                    "items": {
+                                        "items": [
+                                            {
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "type",
+                                                    "user",
+                                                    "text",
+                                                    "thread_ts",
+                                                    "reply_count",
+                                                    "replies",
+                                                    "subscribed",
+                                                    "last_read",
+                                                    "unread_count",
+                                                    "ts"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "thread_ts": {
+                                                        "$ref": "#/definitions/defs_ts"
+                                                    },
+                                                    "subscribed": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "source_team": {
+                                                        "$ref": "#/definitions/defs_team"
+                                                    },
+                                                    "last_read": {
+                                                        "$ref": "#/definitions/defs_ts"
+                                                    },
+                                                    "user_profile": {
+                                                        "$ref": "#/definitions/objs_user_profile_short"
+                                                    },
+                                                    "text": {
+                                                        "type": "string"
+                                                    },
+                                                    "team": {
+                                                        "$ref": "#/definitions/defs_team"
+                                                    },
+                                                    "ts": {
+                                                        "$ref": "#/definitions/defs_ts"
+                                                    },
+                                                    "unread_count": {
+                                                        "type": "integer"
+                                                    },
+                                                    "reply_count": {
+                                                        "type": "integer"
+                                                    },
+                                                    "user": {
+                                                        "$ref": "#/definitions/defs_user_id"
+                                                    },
+                                                    "replies": {
+                                                        "items": {
+                                                            "additionalProperties": true,
+                                                            "required": [
+                                                                "user",
+                                                                "ts"
+                                                            ],
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "ts": {
+                                                                    "$ref": "#/definitions/defs_ts"
+                                                                },
+                                                                "user": {
+                                                                    "$ref": "#/definitions/defs_user_id"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "user_team": {
+                                                        "$ref": "#/definitions/defs_team"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "additionalProperties": true,
+                                                "required": [
+                                                    "type",
+                                                    "user",
+                                                    "text",
+                                                    "thread_ts",
+                                                    "parent_user_id",
+                                                    "ts"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "thread_ts": {
+                                                        "$ref": "#/definitions/defs_ts"
+                                                    },
+                                                    "source_team": {
+                                                        "$ref": "#/definitions/defs_team"
+                                                    },
+                                                    "user_profile": {
+                                                        "$ref": "#/definitions/objs_user_profile_short"
+                                                    },
+                                                    "text": {
+                                                        "type": "string"
+                                                    },
+                                                    "ts": {
+                                                        "$ref": "#/definitions/defs_ts"
+                                                    },
+                                                    "user": {
+                                                        "$ref": "#/definitions/defs_user_id"
+                                                    },
+                                                    "team": {
+                                                        "$ref": "#/definitions/defs_team"
+                                                    },
+                                                    "parent_user_id": {
+                                                        "$ref": "#/definitions/defs_user_id"
+                                                    },
+                                                    "is_starred": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "user_team": {
+                                                        "$ref": "#/definitions/defs_team"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "type": "array"
                                 }
                             }
                         },
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "has_more": true,
+                                "ok": true,
+                                "messages": [
+                                    {
+                                        "thread_ts": "1482960137.003543",
+                                        "last_read": "1484678597.521003",
+                                        "subscribed": true,
+                                        "text": "island",
+                                        "ts": "1482960137.003543",
+                                        "unread_count": 0,
+                                        "reply_count": 3,
+                                        "user": "U061F7AUR",
+                                        "replies": [
+                                            {
+                                                "user": "U061F7AUR",
+                                                "ts": "1483037603.017503"
+                                            },
+                                            {
+                                                "user": "U061F7AUR",
+                                                "ts": "1483051909.018632"
+                                            },
+                                            {
+                                                "user": "U061F7AUR",
+                                                "ts": "1483125339.020269"
+                                            }
+                                        ],
+                                        "type": "message"
+                                    },
+                                    {
+                                        "thread_ts": "1482960137.003543",
+                                        "text": "one island",
+                                        "ts": "1483037603.017503",
+                                        "user": "U061F7AUR",
+                                        "parent_user_id": "U061F7AUR",
+                                        "type": "message"
+                                    },
+                                    {
+                                        "thread_ts": "1482960137.003543",
+                                        "text": "two island",
+                                        "ts": "1483051909.018632",
+                                        "user": "U061F7AUR",
+                                        "parent_user_id": "U061F7AUR",
+                                        "type": "message"
+                                    },
+                                    {
+                                        "thread_ts": "1482960137.003543",
+                                        "text": "three for the land",
+                                        "ts": "1483125339.020269",
+                                        "user": "U061F7AUR",
+                                        "parent_user_id": "U061F7AUR",
+                                        "type": "message"
+                                    }
+                                ],
+                                "response_metadata": {
+                                    "next_cursor": "bmV4dF90czoxNDg0Njc4MjkwNTE3MDkx"
+                                }
                             }
                         }
                     }
                 },
-                "description": "Unarchives a private channel.",
+                "description": "Retrieve a thread of messages posted to a conversation",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `groups:write`",
-                        "type": "string",
-                        "name": "token",
-                        "in": "header"
+                        "description": "Include messages with latest or oldest timestamp in results only when either timestamp is specified.",
+                        "type": "boolean",
+                        "name": "inclusive",
+                        "in": "query"
                     },
                     {
-                        "description": "Private channel to unarchive",
+                        "description": "Unique identifier of a thread's parent message.",
+                        "type": "number",
+                        "name": "ts",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail.",
+                        "type": "string",
+                        "name": "cursor",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Authentication token. Requires scope: `conversations:history`",
+                        "type": "string",
+                        "name": "token",
+                        "in": "query"
+                    },
+                    {
+                        "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached.",
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Start of time range of messages to include in results.",
+                        "type": "number",
+                        "name": "oldest",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Conversation ID to fetch thread from.",
                         "type": "string",
                         "name": "channel",
-                        "in": "formData"
+                        "in": "query"
+                    },
+                    {
+                        "description": "End of time range of messages to include in results.",
+                        "type": "number",
+                        "name": "latest",
+                        "in": "query"
                     }
                 ],
                 "tags": [
-                    "groups"
+                    "conversations"
                 ],
                 "produces": [
                     "application/json"
@@ -15619,19 +16261,21 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "groups:write"
+                            "channels:history",
+                            "groups:history",
+                            "im:history",
+                            "mpim:history"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/groups.unarchive",
+                    "url": "https://api.slack.com/methods/conversations.replies",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded",
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
-                "operationId": "groups_unarchive"
+                "operationId": "conversations_replies"
             }
         },
         "/channels.replies": {
@@ -15924,6 +16568,12 @@
                         "in": "header"
                     },
                     {
+                        "description": "Disable Slack markup parsing by setting to `false`. Enabled by default.",
+                        "type": "boolean",
+                        "name": "mrkdwn",
+                        "in": "formData"
+                    },
+                    {
                         "description": "Emoji to use as the icon for this message. Overrides `icon_url`. Must be used in conjunction with `as_user` set to `false`, otherwise ignored. See [authorship](#authorship) below.",
                         "type": "string",
                         "name": "icon_emoji",
@@ -16028,7 +16678,7 @@
                         }
                     }
                 },
-                "description": "Marks a user as active.",
+                "description": "Marked a user as active. Deprecated and non-functional.",
                 "parameters": [
                     {
                         "description": "Authentication token. Requires scope: `users:write`",
@@ -16472,50 +17122,21 @@
                 "operationId": "groups_archive"
             }
         },
-        "/conversations.replies": {
-            "get": {
+        "/groups.unarchive": {
+            "post": {
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Schema for error response from conversations.replies method",
-                            "title": "conversations.replies error schema",
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default error template",
                             "required": [
-                                "ok",
-                                "error"
+                                "ok"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
-                                "needed": {
-                                    "type": "string"
-                                },
-                                "error": {
-                                    "enum": [
-                                        "missing_scope",
-                                        "channel_not_found",
-                                        "thread_not_found",
-                                        "not_authed",
-                                        "invalid_auth",
-                                        "account_inactive",
-                                        "invalid_arg_name",
-                                        "invalid_array_arg",
-                                        "invalid_charset",
-                                        "invalid_form_data",
-                                        "invalid_post_type",
-                                        "missing_post_type",
-                                        "team_added_to_org",
-                                        "invalid_json",
-                                        "json_not_object",
-                                        "request_timeout",
-                                        "upgrade_required"
-                                    ],
-                                    "type": "string"
-                                },
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_false"
-                                },
-                                "provided": {
-                                    "type": "string"
+                                    "$ref": "#/definitions/defs_ok_true"
                                 }
                             }
                         },
@@ -16523,275 +17144,50 @@
                         "examples": {
                             "application/json": {
                                 "ok": false,
-                                "error": "thread_not_found"
+                                "error": "invalid_auth"
                             }
                         }
                     },
                     "200": {
                         "schema": {
-                            "description": "Schema for successful response from conversations.replies method",
-                            "title": "conversations.replies success schema",
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default success template",
                             "required": [
-                                "ok",
-                                "messages"
+                                "ok"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
-                                "has_more": {
-                                    "type": "boolean"
-                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
-                                },
-                                "messages": {
-                                    "items": {
-                                        "items": [
-                                            {
-                                                "additionalProperties": false,
-                                                "required": [
-                                                    "type",
-                                                    "user",
-                                                    "text",
-                                                    "thread_ts",
-                                                    "reply_count",
-                                                    "replies",
-                                                    "subscribed",
-                                                    "last_read",
-                                                    "unread_count",
-                                                    "ts"
-                                                ],
-                                                "type": "object",
-                                                "properties": {
-                                                    "thread_ts": {
-                                                        "$ref": "#/definitions/defs_ts"
-                                                    },
-                                                    "subscribed": {
-                                                        "type": "boolean"
-                                                    },
-                                                    "source_team": {
-                                                        "$ref": "#/definitions/defs_team"
-                                                    },
-                                                    "last_read": {
-                                                        "$ref": "#/definitions/defs_ts"
-                                                    },
-                                                    "user_profile": {
-                                                        "$ref": "#/definitions/objs_user_profile_short"
-                                                    },
-                                                    "text": {
-                                                        "type": "string"
-                                                    },
-                                                    "team": {
-                                                        "$ref": "#/definitions/defs_team"
-                                                    },
-                                                    "ts": {
-                                                        "$ref": "#/definitions/defs_ts"
-                                                    },
-                                                    "unread_count": {
-                                                        "type": "integer"
-                                                    },
-                                                    "reply_count": {
-                                                        "type": "integer"
-                                                    },
-                                                    "user": {
-                                                        "$ref": "#/definitions/defs_user"
-                                                    },
-                                                    "replies": {
-                                                        "items": {
-                                                            "additionalProperties": false,
-                                                            "required": [
-                                                                "user",
-                                                                "ts"
-                                                            ],
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "ts": {
-                                                                    "$ref": "#/definitions/defs_ts"
-                                                                },
-                                                                "user": {
-                                                                    "$ref": "#/definitions/defs_user"
-                                                                }
-                                                            }
-                                                        },
-                                                        "type": "array"
-                                                    },
-                                                    "type": {
-                                                        "type": "string"
-                                                    },
-                                                    "user_team": {
-                                                        "$ref": "#/definitions/defs_team"
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                "additionalProperties": false,
-                                                "required": [
-                                                    "type",
-                                                    "user",
-                                                    "text",
-                                                    "thread_ts",
-                                                    "parent_user_id",
-                                                    "ts"
-                                                ],
-                                                "type": "object",
-                                                "properties": {
-                                                    "thread_ts": {
-                                                        "$ref": "#/definitions/defs_ts"
-                                                    },
-                                                    "source_team": {
-                                                        "$ref": "#/definitions/defs_team"
-                                                    },
-                                                    "user_profile": {
-                                                        "$ref": "#/definitions/objs_user_profile_short"
-                                                    },
-                                                    "text": {
-                                                        "type": "string"
-                                                    },
-                                                    "ts": {
-                                                        "$ref": "#/definitions/defs_ts"
-                                                    },
-                                                    "user": {
-                                                        "$ref": "#/definitions/defs_user"
-                                                    },
-                                                    "team": {
-                                                        "$ref": "#/definitions/defs_team"
-                                                    },
-                                                    "parent_user_id": {
-                                                        "$ref": "#/definitions/defs_user"
-                                                    },
-                                                    "is_starred": {
-                                                        "type": "boolean"
-                                                    },
-                                                    "type": {
-                                                        "type": "string"
-                                                    },
-                                                    "user_team": {
-                                                        "$ref": "#/definitions/defs_team"
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    },
-                                    "type": "array"
                                 }
                             }
                         },
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "has_more": true,
-                                "ok": true,
-                                "messages": [
-                                    {
-                                        "thread_ts": "1482960137.003543",
-                                        "last_read": "1484678597.521003",
-                                        "subscribed": true,
-                                        "text": "island",
-                                        "ts": "1482960137.003543",
-                                        "unread_count": 0,
-                                        "reply_count": 3,
-                                        "user": "U061F7AUR",
-                                        "replies": [
-                                            {
-                                                "user": "U061F7AUR",
-                                                "ts": "1483037603.017503"
-                                            },
-                                            {
-                                                "user": "U061F7AUR",
-                                                "ts": "1483051909.018632"
-                                            },
-                                            {
-                                                "user": "U061F7AUR",
-                                                "ts": "1483125339.020269"
-                                            }
-                                        ],
-                                        "type": "message"
-                                    },
-                                    {
-                                        "thread_ts": "1482960137.003543",
-                                        "text": "one island",
-                                        "ts": "1483037603.017503",
-                                        "user": "U061F7AUR",
-                                        "parent_user_id": "U061F7AUR",
-                                        "type": "message"
-                                    },
-                                    {
-                                        "thread_ts": "1482960137.003543",
-                                        "text": "two island",
-                                        "ts": "1483051909.018632",
-                                        "user": "U061F7AUR",
-                                        "parent_user_id": "U061F7AUR",
-                                        "type": "message"
-                                    },
-                                    {
-                                        "thread_ts": "1482960137.003543",
-                                        "text": "three for the land",
-                                        "ts": "1483125339.020269",
-                                        "user": "U061F7AUR",
-                                        "parent_user_id": "U061F7AUR",
-                                        "type": "message"
-                                    }
-                                ],
-                                "response_metadata": {
-                                    "next_cursor": "bmV4dF90czoxNDg0Njc4MjkwNTE3MDkx"
-                                }
+                                "ok": true
                             }
                         }
                     }
                 },
-                "description": "Retrieve a thread of messages posted to a conversation",
+                "description": "Unarchives a private channel.",
                 "parameters": [
                     {
-                        "description": "Include messages with latest or oldest timestamp in results only when either timestamp is specified.",
-                        "type": "boolean",
-                        "name": "inclusive",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Unique identifier of a thread's parent message.",
-                        "type": "number",
-                        "name": "ts",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail.",
-                        "type": "string",
-                        "name": "cursor",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Authentication token. Requires scope: `conversations:history`",
+                        "description": "Authentication token. Requires scope: `groups:write`",
                         "type": "string",
                         "name": "token",
-                        "in": "query"
+                        "in": "header"
                     },
                     {
-                        "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached.",
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Start of time range of messages to include in results.",
-                        "type": "number",
-                        "name": "oldest",
-                        "in": "query"
-                    },
-                    {
-                        "description": "Conversation ID to fetch thread from.",
+                        "description": "Private channel to unarchive",
                         "type": "string",
                         "name": "channel",
-                        "in": "query"
-                    },
-                    {
-                        "description": "End of time range of messages to include in results.",
-                        "type": "number",
-                        "name": "latest",
-                        "in": "query"
+                        "in": "formData"
                     }
                 ],
                 "tags": [
-                    "conversations"
+                    "groups"
                 ],
                 "produces": [
                     "application/json"
@@ -16799,21 +17195,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "channels:history",
-                            "groups:history",
-                            "im:history",
-                            "mpim:history"
+                            "groups:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/conversations.replies",
+                    "url": "https://api.slack.com/methods/groups.unarchive",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded"
+                    "application/x-www-form-urlencoded",
+                    "application/json"
                 ],
-                "operationId": "conversations_replies"
+                "operationId": "groups_unarchive"
             }
         },
         "/stars.remove": {
@@ -17011,7 +17405,7 @@
                     "type": "integer"
                 },
                 "user": {
-                    "$ref": "#/definitions/defs_user"
+                    "$ref": "#/definitions/defs_user_id"
                 },
                 "is_im": {
                     "type": "boolean"
@@ -17021,6 +17415,101 @@
                 }
             },
             "title": "IM Object"
+        },
+        "objs_user": {
+            "additionalProperties": true,
+            "required": [
+                "id",
+                "team_id",
+                "name",
+                "deleted",
+                "color",
+                "real_name",
+                "tz",
+                "tz_label",
+                "tz_offset",
+                "profile",
+                "is_admin",
+                "is_owner",
+                "is_primary_owner",
+                "is_restricted",
+                "is_ultra_restricted",
+                "is_bot",
+                "updated",
+                "is_app_user"
+            ],
+            "type": "object",
+            "properties": {
+                "profile": {
+                    "$ref": "#/definitions/objs_user_profile"
+                },
+                "updated": {
+                    "type": "number"
+                },
+                "tz": {
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "deleted": {
+                    "type": "boolean"
+                },
+                "is_app_user": {
+                    "type": "boolean"
+                },
+                "is_bot": {
+                    "type": "boolean"
+                },
+                "tz_label": {
+                    "type": "string"
+                },
+                "real_name": {
+                    "type": "string"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "team_id": {
+                    "$ref": "#/definitions/defs_team"
+                },
+                "is_admin": {
+                    "type": "boolean"
+                },
+                "is_ultra_restricted": {
+                    "type": "boolean"
+                },
+                "is_owner": {
+                    "type": "boolean"
+                },
+                "is_restricted": {
+                    "type": "boolean"
+                },
+                "tz_offset": {
+                    "type": "number"
+                },
+                "has_2fa": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "$ref": "#/definitions/defs_user_id"
+                },
+                "color": {
+                    "pattern": "^[a-fA-F0-9]{6}$",
+                    "type": "string"
+                },
+                "is_primary_owner": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "defs_comment_id": {
+            "pattern": "^Fc[A-Z0-9]{8}$",
+            "type": "string",
+            "title": "File Comment ID"
         },
         "defs_bot_id": {
             "pattern": "^B[A-Z0-9]{8}$",
@@ -17071,6 +17560,12 @@
             "additionalProperties": true,
             "type": "object",
             "properties": {
+                "reactions": {
+                    "items": {
+                        "$ref": "#/definitions/objs_reaction"
+                    },
+                    "type": "array"
+                },
                 "image_exif_rotation": {
                     "type": "integer"
                 },
@@ -17088,7 +17583,8 @@
                     "type": "boolean"
                 },
                 "thumb_64": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri"
                 },
                 "size": {
                     "type": "integer"
@@ -17103,10 +17599,12 @@
                     "type": "string"
                 },
                 "url_private": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri"
                 },
                 "thumb_360": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri"
                 },
                 "id": {
                     "$ref": "#/definitions/defs_file_id"
@@ -17116,7 +17614,8 @@
                     "type": "array"
                 },
                 "thumb_80": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri"
                 },
                 "thumb_360_h": {
                     "type": "integer"
@@ -17137,10 +17636,15 @@
                     "type": "boolean"
                 },
                 "thumb_160": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "external_type": {
                     "type": "string"
                 },
                 "url_private_download": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri"
                 },
                 "user": {
                     "type": "string"
@@ -17162,10 +17666,12 @@
                     "type": "string"
                 },
                 "permalink_public": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri"
                 },
                 "permalink": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri"
                 },
                 "is_external": {
                     "type": "boolean"
@@ -17173,8 +17679,11 @@
                 "created": {
                     "type": "integer"
                 },
-                "external_type": {
-                    "type": "string"
+                "pinned_to": {
+                    "items": {
+                        "$ref": "#/definitions/defs_channel"
+                    },
+                    "type": "array"
                 },
                 "comments_count": {
                     "type": "integer"
@@ -17185,11 +17694,6 @@
             },
             "title": "file object"
         },
-        "defs_user": {
-            "pattern": "^[UW][A-Z0-9]{8}$",
-            "type": "string",
-            "title": "User ID"
-        },
         "objs_user_profile": {
             "additionalProperties": true,
             "required": [
@@ -17198,7 +17702,6 @@
                 "avatar_hash",
                 "real_name_normalized",
                 "display_name_normalized",
-                "email",
                 "image_24",
                 "image_32",
                 "image_48",
@@ -17216,6 +17719,10 @@
                 "display_name_normalized": {
                     "type": "string"
                 },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
                 "image_32": {
                     "type": "string",
                     "format": "uri"
@@ -17226,6 +17733,9 @@
                 "image_72": {
                     "type": "string",
                     "format": "uri"
+                },
+                "status_expiration": {
+                    "type": "integer"
                 },
                 "image_192": {
                     "type": "string",
@@ -17243,17 +17753,18 @@
                 "real_name_normalized": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string",
-                    "format": "email"
+                "always_active": {
+                    "type": "boolean"
+                },
+                "status_text_canonical": {
+                    "type": "string"
                 },
                 "image_24": {
                     "type": "string",
                     "format": "uri"
                 },
-                "image_original": {
-                    "type": "string",
-                    "format": "uri"
+                "phone": {
+                    "type": "string"
                 },
                 "image_48": {
                     "type": "string",
@@ -17262,11 +17773,15 @@
                 "guest_channels": {
                     "type": "string"
                 },
-                "phone": {
-                    "type": "string"
+                "image_original": {
+                    "type": "string",
+                    "format": "uri"
                 },
                 "fields": {
-                    "type": "object"
+                    "type": [
+                        "object",
+                        "null"
+                    ]
                 },
                 "real_name": {
                     "type": "string"
@@ -17374,11 +17889,23 @@
                 "comment": {
                     "type": "string"
                 },
+                "reactions": {
+                    "items": {
+                        "$ref": "#/definitions/objs_reaction"
+                    },
+                    "type": "array"
+                },
                 "created": {
                     "type": "integer"
                 },
                 "timestamp": {
                     "type": "integer"
+                },
+                "pinned_to": {
+                    "items": {
+                        "$ref": "#/definitions/defs_channel"
+                    },
+                    "type": "array"
                 },
                 "is_intro": {
                     "type": "boolean"
@@ -17387,7 +17914,7 @@
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
+                    "$ref": "#/definitions/defs_comment_id"
                 }
             },
             "title": "File Comment Object"
@@ -17421,7 +17948,7 @@
                     "$ref": "#/definitions/defs_ts"
                 },
                 "creator": {
-                    "$ref": "#/definitions/defs_user"
+                    "$ref": "#/definitions/defs_user_id"
                 },
                 "is_member": {
                     "type": "boolean"
@@ -17471,7 +17998,7 @@
                     "type": "integer"
                 },
                 "accepted_user": {
-                    "$ref": "#/definitions/defs_user"
+                    "$ref": "#/definitions/defs_user_id"
                 },
                 "is_pending_ext_shared": {
                     "type": "boolean"
@@ -17507,7 +18034,7 @@
                     "uniqueItems": true,
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/defs_user"
+                        "$ref": "#/definitions/defs_user_id"
                     }
                 },
                 "is_private": {
@@ -17610,7 +18137,7 @@
                     "$ref": "#/definitions/defs_ts"
                 },
                 "creator": {
-                    "$ref": "#/definitions/defs_user"
+                    "$ref": "#/definitions/defs_user_id"
                 },
                 "is_moved": {
                     "type": "integer"
@@ -17678,7 +18205,7 @@
                     "uniqueItems": true,
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/defs_user"
+                        "$ref": "#/definitions/defs_user_id"
                     }
                 },
                 "priority": {
@@ -17703,12 +18230,79 @@
             },
             "title": "Group object"
         },
+        "objs_reaction": {
+            "additionalProperties": true,
+            "required": [
+                "name",
+                "users",
+                "count"
+            ],
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "users": {
+                    "items": {
+                        "$ref": "#/definitions/objs_user"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "Reaction object"
+        },
         "defs_ok_false": {
             "enum": [
                 false
             ],
             "type": "boolean",
             "title": "default failure response"
+        },
+        "objs_inviting_user": {
+            "additionalProperties": true,
+            "required": [
+                "id",
+                "team_id",
+                "name",
+                "profile",
+                "is_restricted",
+                "is_ultra_restricted",
+                "updated",
+                "is_app_user"
+            ],
+            "type": "object",
+            "properties": {
+                "profile": {
+                    "$ref": "#/definitions/objs_user_profile_shortest"
+                },
+                "updated": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "is_app_user": {
+                    "type": "boolean"
+                },
+                "real_name": {
+                    "type": "string"
+                },
+                "team_id": {
+                    "$ref": "#/definitions/defs_team"
+                },
+                "is_ultra_restricted": {
+                    "type": "boolean"
+                },
+                "is_restricted": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "$ref": "#/definitions/defs_user_id"
+                }
+            }
         },
         "objs_user_profile_short": {
             "additionalProperties": true,
@@ -17773,7 +18367,7 @@
         "objs_conversation": {
             "items": [
                 {
-                    "additionalProperties": false,
+                    "additionalProperties": true,
                     "required": [
                         "id",
                         "name",
@@ -17805,7 +18399,7 @@
                             "$ref": "#/definitions/defs_ts"
                         },
                         "creator": {
-                            "$ref": "#/definitions/defs_user"
+                            "$ref": "#/definitions/defs_user_id"
                         },
                         "is_member": {
                             "type": "boolean"
@@ -17814,7 +18408,7 @@
                             "type": "boolean"
                         },
                         "topic": {
-                            "additionalProperties": false,
+                            "additionalProperties": true,
                             "required": [
                                 "value",
                                 "creator",
@@ -17852,14 +18446,14 @@
                             "type": "boolean"
                         },
                         "user": {
-                            "$ref": "#/definitions/defs_user"
+                            "$ref": "#/definitions/defs_user_id"
                         },
                         "shares": {
                             "minItems": 0,
                             "uniqueItems": true,
                             "type": "array",
                             "items": {
-                                "additionalProperties": false,
+                                "additionalProperties": true,
                                 "required": [
                                     "team",
                                     "user",
@@ -17869,13 +18463,13 @@
                                 "type": "object",
                                 "properties": {
                                     "accepted_user": {
-                                        "$ref": "#/definitions/defs_user"
+                                        "$ref": "#/definitions/defs_user_id"
                                     },
                                     "is_active": {
                                         "type": "boolean"
                                     },
                                     "user": {
-                                        "$ref": "#/definitions/defs_user"
+                                        "$ref": "#/definitions/defs_user_id"
                                     },
                                     "team": {
                                         "$ref": "#/definitions/objs_team"
@@ -17893,7 +18487,7 @@
                             "type": "integer"
                         },
                         "accepted_user": {
-                            "$ref": "#/definitions/defs_user"
+                            "$ref": "#/definitions/defs_user_id"
                         },
                         "is_pending_ext_shared": {
                             "type": "boolean"
@@ -17910,11 +18504,19 @@
                         "is_group": {
                             "type": "boolean"
                         },
+                        "shared_team_ids": {
+                            "minItems": 0,
+                            "uniqueItems": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/defs_team"
+                            }
+                        },
                         "is_read_only": {
                             "type": "boolean"
                         },
                         "purpose": {
-                            "additionalProperties": false,
+                            "additionalProperties": true,
                             "required": [
                                 "value",
                                 "creator",
@@ -17985,7 +18587,7 @@
                             ]
                         },
                         "display_counts": {
-                            "additionalProperties": false,
+                            "additionalProperties": true,
                             "required": [
                                 "display_counts",
                                 "guest_counts"
@@ -18004,7 +18606,7 @@
                     "title": "Conversation object"
                 },
                 {
-                    "additionalProperties": false,
+                    "additionalProperties": true,
                     "required": [
                         "id",
                         "name",
@@ -18036,7 +18638,7 @@
                             "$ref": "#/definitions/defs_ts"
                         },
                         "creator": {
-                            "$ref": "#/definitions/defs_user"
+                            "$ref": "#/definitions/defs_user_id"
                         },
                         "is_member": {
                             "type": "boolean"
@@ -18045,7 +18647,7 @@
                             "type": "boolean"
                         },
                         "topic": {
-                            "additionalProperties": false,
+                            "additionalProperties": true,
                             "required": [
                                 "value",
                                 "creator",
@@ -18083,14 +18685,14 @@
                             "type": "boolean"
                         },
                         "user": {
-                            "$ref": "#/definitions/defs_user"
+                            "$ref": "#/definitions/defs_user_id"
                         },
                         "shares": {
                             "minItems": 0,
                             "uniqueItems": true,
                             "type": "array",
                             "items": {
-                                "additionalProperties": false,
+                                "additionalProperties": true,
                                 "required": [
                                     "team",
                                     "user",
@@ -18100,13 +18702,13 @@
                                 "type": "object",
                                 "properties": {
                                     "accepted_user": {
-                                        "$ref": "#/definitions/defs_user"
+                                        "$ref": "#/definitions/defs_user_id"
                                     },
                                     "is_active": {
                                         "type": "boolean"
                                     },
                                     "user": {
-                                        "$ref": "#/definitions/defs_user"
+                                        "$ref": "#/definitions/defs_user_id"
                                     },
                                     "team": {
                                         "$ref": "#/definitions/objs_team"
@@ -18124,7 +18726,7 @@
                             "type": "integer"
                         },
                         "accepted_user": {
-                            "$ref": "#/definitions/defs_user"
+                            "$ref": "#/definitions/defs_user_id"
                         },
                         "is_pending_ext_shared": {
                             "type": "boolean"
@@ -18141,11 +18743,19 @@
                         "is_group": {
                             "type": "boolean"
                         },
+                        "shared_team_ids": {
+                            "minItems": 0,
+                            "uniqueItems": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/defs_team"
+                            }
+                        },
                         "is_read_only": {
                             "type": "boolean"
                         },
                         "purpose": {
-                            "additionalProperties": false,
+                            "additionalProperties": true,
                             "required": [
                                 "value",
                                 "creator",
@@ -18169,7 +18779,7 @@
                             "uniqueItems": true,
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/defs_user"
+                                "$ref": "#/definitions/defs_user_id"
                             }
                         },
                         "pin_count": {
@@ -18224,7 +18834,7 @@
                             ]
                         },
                         "display_counts": {
-                            "additionalProperties": false,
+                            "additionalProperties": true,
                             "required": [
                                 "display_counts",
                                 "guest_counts"
@@ -18243,7 +18853,7 @@
                     "title": "Conversation MPIM Object"
                 },
                 {
-                    "additionalProperties": false,
+                    "additionalProperties": true,
                     "required": [
                         "id",
                         "created",
@@ -18271,7 +18881,7 @@
                             "type": "integer"
                         },
                         "user": {
-                            "$ref": "#/definitions/defs_user"
+                            "$ref": "#/definitions/defs_user_id"
                         },
                         "id": {
                             "$ref": "#/definitions/defs_dm_id"
@@ -18346,6 +18956,42 @@
             },
             "title": "Team Object"
         },
+        "objs_user_profile_shortest": {
+            "additionalProperties": true,
+            "required": [
+                "avatar_hash",
+                "image_72",
+                "first_name",
+                "real_name",
+                "display_name",
+                "team"
+            ],
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "display_name": {
+                    "type": "string"
+                },
+                "team": {
+                    "$ref": "#/definitions/defs_team"
+                },
+                "real_name": {
+                    "type": "string"
+                },
+                "avatar_hash": {
+                    "type": "string"
+                },
+                "image_72": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            }
+        },
         "objs_message": {
             "additionalProperties": true,
             "required": [
@@ -18355,6 +19001,12 @@
             ],
             "type": "object",
             "properties": {
+                "reactions": {
+                    "items": {
+                        "$ref": "#/definitions/objs_reaction"
+                    },
+                    "type": "array"
+                },
                 "attachments": {
                     "minItems": 1,
                     "uniqueItems": true,
@@ -18412,7 +19064,7 @@
                                 "$ref": "#/definitions/defs_ts"
                             },
                             "user": {
-                                "$ref": "#/definitions/defs_user"
+                                "$ref": "#/definitions/defs_user_id"
                             }
                         }
                     },
@@ -18455,7 +19107,7 @@
                     "$ref": "#/definitions/objs_user_profile_short"
                 },
                 "user": {
-                    "$ref": "#/definitions/defs_user"
+                    "$ref": "#/definitions/defs_user_id"
                 },
                 "old_name": {
                     "type": "string"
@@ -18463,8 +19115,18 @@
                 "thread_ts": {
                     "$ref": "#/definitions/defs_ts"
                 },
+                "permalink": {
+                    "type": "string",
+                    "format": "uri"
+                },
                 "name": {
                     "type": "string"
+                },
+                "pinned_to": {
+                    "items": {
+                        "$ref": "#/definitions/defs_channel"
+                    },
+                    "type": "array"
                 },
                 "unread_count": {
                     "type": "integer"
@@ -18473,7 +19135,7 @@
                     "$ref": "#/definitions/defs_team"
                 },
                 "inviter": {
-                    "$ref": "#/definitions/defs_user"
+                    "$ref": "#/definitions/defs_user_id"
                 },
                 "bot_id": {
                     "$ref": "#/definitions/defs_bot_id"
