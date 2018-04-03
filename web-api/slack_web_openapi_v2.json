@@ -1,6 +1,6 @@
 {
     "info": {
-        "version": "1.0.4",
+        "version": "1.0.5",
         "description": "One way to interact with the Slack platform is its HTTP RPC-based Web API, a collection of methods requiring OAuth 2.0-based user, bot, or workspace tokens blessed with related OAuth scopes.",
         "title": "Slack Web API"
     },
@@ -9,20 +9,7 @@
             "post": {
                 "responses": {
                     "default": {
-                        "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
-                            "required": [
-                                "ok"
-                            ],
-                            "additionalProperties": true,
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
-                                }
-                            }
-                        },
+                        "schema": {},
                         "description": "Typical error response",
                         "examples": {
                             "application/json": {
@@ -33,16 +20,24 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response of chat.delete method",
+                            "title": "chat.delete success schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "channel",
+                                "ts"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "ts": {
+                                    "$ref": "#/definitions/defs_ts"
+                                },
+                                "channel": {
+                                    "$ref": "#/definitions/defs_channel"
                                 }
                             }
                         },
@@ -240,21 +235,45 @@
                 "operationId": "files_comments_edit"
             }
         },
-        "/im.close": {
+        "/mpim.open": {
             "post": {
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from mpim.open method",
+                            "title": "mpim.open error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "users_list_not_supplied",
+                                        "not_enough_users",
+                                        "too_many_users",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -268,44 +287,51 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from mpim.open method",
+                            "title": "mpim.open success schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "group"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "group": {
+                                    "$ref": "#/definitions/objs_group"
                                 }
                             }
                         },
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "ok": true,
+                                "channel": {
+                                    "id": "D024BFF1M"
+                                }
                             }
                         }
                     }
                 },
-                "description": "Close a direct message channel.",
+                "description": "This method opens a multiparty direct message.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `im:write`",
+                        "description": "Authentication token. Requires scope: `mpim:write`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Direct message channel to close.",
+                        "description": "Comma separated lists of users.  The ordering of the users is preserved whenever a MPIM group is returned.",
                         "type": "string",
-                        "name": "channel",
+                        "name": "users",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "im"
+                    "mpim"
                 ],
                 "produces": [
                     "application/json"
@@ -313,19 +339,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "im:write"
+                            "mpim:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/im.close",
+                    "url": "https://api.slack.com/methods/mpim.open",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "im_close"
+                "operationId": "mpim_open"
             }
         },
         "/groups.replies": {
@@ -537,6 +563,106 @@
                     "application/x-www-form-urlencoded"
                 ],
                 "operationId": "bots_info"
+            }
+        },
+        "/reminders.add": {
+            "post": {
+                "responses": {
+                    "default": {
+                        "schema": {
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default error template",
+                            "required": [
+                                "ok"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_true"
+                                }
+                            }
+                        },
+                        "description": "Typical error response",
+                        "examples": {
+                            "application/json": {
+                                "ok": false,
+                                "error": "invalid_auth"
+                            }
+                        }
+                    },
+                    "200": {
+                        "schema": {
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default success template",
+                            "required": [
+                                "ok"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_true"
+                                }
+                            }
+                        },
+                        "description": "Typical success response",
+                        "examples": {
+                            "application/json": {
+                                "ok": true
+                            }
+                        }
+                    }
+                },
+                "description": "Creates a reminder.",
+                "parameters": [
+                    {
+                        "description": "The content of the reminder",
+                        "type": "string",
+                        "name": "text",
+                        "in": "formData"
+                    },
+                    {
+                        "description": "Authentication token. Requires scope: `reminders:write`",
+                        "type": "string",
+                        "name": "token",
+                        "in": "header"
+                    },
+                    {
+                        "description": "The user who will receive the reminder. If no user is specified, the reminder will go to user who created it.",
+                        "type": "string",
+                        "name": "user",
+                        "in": "formData"
+                    },
+                    {
+                        "description": "When this reminder should happen: the Unix timestamp (up to five years from now), the number of seconds until the reminder (if within 24 hours), or a natural language description (Ex. \"in 15 minutes,\" or \"every Thursday\")",
+                        "type": "string",
+                        "name": "time",
+                        "in": "formData"
+                    }
+                ],
+                "tags": [
+                    "reminders"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "slackAuth": [
+                            "reminders:write"
+                        ]
+                    }
+                ],
+                "externalDocs": {
+                    "url": "https://api.slack.com/methods/reminders.add",
+                    "description": "API method documentation"
+                },
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "application/json"
+                ],
+                "operationId": "reminders_add"
             }
         },
         "/groups.rename": {
@@ -3125,7 +3251,7 @@
                                     "is_app_user": false,
                                     "is_bot": false,
                                     "tz_label": "Pacific Daylight Time",
-                                    "real_name": "episod",
+                                    "real_name": "Egon Spengler",
                                     "color": "9f69e7",
                                     "team_id": "T012AB3C4",
                                     "is_admin": true,
@@ -3282,7 +3408,7 @@
                                     "is_app_user": false,
                                     "is_bot": false,
                                     "tz_label": "Pacific Daylight Time",
-                                    "real_name": "episod",
+                                    "real_name": "Egon Spengler",
                                     "color": "9f69e7",
                                     "team_id": "T012AB3C4",
                                     "is_admin": true,
@@ -9906,7 +10032,50 @@
             "post": {
                 "responses": {
                     "default": {
-                        "schema": {},
+                        "schema": {
+                            "description": "Schema for error response chat.update method",
+                            "title": "chat.update error schema",
+                            "required": [
+                                "ok",
+                                "error"
+                            ],
+                            "additionalProperties": true,
+                            "type": "object",
+                            "properties": {
+                                "ok": {
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "message_not_found",
+                                        "cant_update_message",
+                                        "channel_not_found",
+                                        "edit_window_closed",
+                                        "msg_too_long",
+                                        "too_many_attachments",
+                                        "rate_limited",
+                                        "no_text",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "token_revoked",
+                                        "no_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "request_timeout",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "upgrade_required",
+                                        "fatal_error"
+                                    ],
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Typical error response",
                         "examples": {
                             "application/json": {
@@ -10668,7 +10837,7 @@
                 "operationId": "groups_invite"
             }
         },
-        "/chat.meMessage": {
+        "/channels.unarchive": {
             "post": {
                 "responses": {
                     "default": {
@@ -10712,36 +10881,28 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true,
-                                "ts": "1417671948.000006",
-                                "channel": "C024BE7LR"
+                                "ok": true
                             }
                         }
                     }
                 },
-                "description": "Share a me message into a channel.",
+                "description": "Unarchives a channel.",
                 "parameters": [
                     {
-                        "description": "Text of the message to send.",
-                        "type": "string",
-                        "name": "text",
-                        "in": "formData"
-                    },
-                    {
-                        "description": "Authentication token. Requires scope: `chat:write:user`",
+                        "description": "Authentication token. Requires scope: `channels:write`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.",
+                        "description": "Channel to unarchive",
                         "type": "string",
                         "name": "channel",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "chat"
+                    "channels"
                 ],
                 "produces": [
                     "application/json"
@@ -10749,19 +10910,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "chat:write:user"
+                            "channels:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/chat.meMessage",
+                    "url": "https://api.slack.com/methods/channels.unarchive",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "chat_meMessage"
+                "operationId": "channels_unarchive"
             }
         },
         "/rtm.connect": {
@@ -10872,16 +11033,38 @@
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
+                            "description": "Schema for error response from team.info method",
+                            "title": "team.info error schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
+                                },
+                                "error": {
+                                    "enum": [
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "token_revokedno_permission",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required",
+                                        "fatal_error"
+                                    ],
+                                    "type": "string"
                                 }
                             }
                         },
@@ -10895,16 +11078,20 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from team.info method",
+                            "title": "team.info schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "team"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "team": {
+                                    "$ref": "#/definitions/objs_team"
                                 }
                             }
                         },
@@ -11538,24 +11725,11 @@
                 "operationId": "groups_create"
             }
         },
-        "/reminders.add": {
-            "post": {
+        "/users.conversations": {
+            "get": {
                 "responses": {
                     "default": {
-                        "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default error template",
-                            "required": [
-                                "ok"
-                            ],
-                            "additionalProperties": true,
-                            "type": "object",
-                            "properties": {
-                                "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
-                                }
-                            }
-                        },
+                        "schema": {},
                         "description": "Typical error response",
                         "examples": {
                             "application/json": {
@@ -11566,56 +11740,155 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Verbose schema not yet ready for this method.",
-                            "title": "Default success template",
+                            "description": "Schema for successful response from users.conversations method. Returned conversation objects do not include `num_members` or `is_member`",
+                            "title": "conversations.list success schema",
                             "required": [
-                                "ok"
+                                "ok",
+                                "channels"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
+                                "channels": {
+                                    "uniqueItems": true,
+                                    "items": {
+                                        "$ref": "#/definitions/objs_conversation"
+                                    },
+                                    "type": "array"
+                                },
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
+                                },
+                                "response_metadata": {
+                                    "additionalProperties": true,
+                                    "required": [
+                                        "next_cursor"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "next_cursor": {
+                                            "type": "string"
+                                        }
+                                    }
                                 }
                             }
                         },
-                        "description": "Typical success response",
+                        "description": "Typical success response with only public channels. Note how `num_members` and `is_member` are not returned like typical `conversations` objects.",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "channels": [
+                                    {
+                                        "is_pending_ext_shared": false,
+                                        "is_general": true,
+                                        "name_normalized": "general",
+                                        "name": "general",
+                                        "is_channel": true,
+                                        "created": 1449252889,
+                                        "is_mpim": false,
+                                        "is_archived": false,
+                                        "creator": "U012A3CDE",
+                                        "is_group": false,
+                                        "pending_shared": [],
+                                        "is_ext_shared": false,
+                                        "is_org_shared": false,
+                                        "previous_names": [],
+                                        "topic": {
+                                            "last_set": 0,
+                                            "value": "Company-wide announcements and work-based matters",
+                                            "creator": ""
+                                        },
+                                        "purpose": {
+                                            "last_set": 0,
+                                            "value": "This channel is for team-wide communication and announcements. All team members are in this channel.",
+                                            "creator": ""
+                                        },
+                                        "unlinked": 0,
+                                        "is_im": false,
+                                        "id": "C012AB3CD",
+                                        "is_private": false,
+                                        "is_shared": false
+                                    },
+                                    {
+                                        "is_pending_ext_shared": false,
+                                        "is_general": false,
+                                        "name_normalized": "random",
+                                        "name": "random",
+                                        "is_channel": true,
+                                        "created": 1449252889,
+                                        "is_mpim": false,
+                                        "is_archived": false,
+                                        "creator": "U061F7AUR",
+                                        "is_group": false,
+                                        "pending_shared": [],
+                                        "is_ext_shared": false,
+                                        "is_org_shared": false,
+                                        "previous_names": [],
+                                        "topic": {
+                                            "last_set": 0,
+                                            "value": "Non-work banter and water cooler conversation",
+                                            "creator": ""
+                                        },
+                                        "purpose": {
+                                            "last_set": 0,
+                                            "value": "A place for non-work-related flimflam, faffing, hodge-podge or jibber-jabber you'd prefer to keep out of more focused work-related channels.",
+                                            "creator": ""
+                                        },
+                                        "unlinked": 0,
+                                        "is_im": false,
+                                        "id": "C061EG9T2",
+                                        "is_private": false,
+                                        "is_shared": false
+                                    }
+                                ],
+                                "ok": true,
+                                "response_metadata": {
+                                    "next_cursor": "dGVhbTpDMDYxRkE1UEI="
+                                }
                             }
                         }
                     }
                 },
-                "description": "Creates a reminder.",
+                "description": "List conversations the calling user may access.",
                 "parameters": [
                     {
-                        "description": "The content of the reminder",
+                        "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail.",
                         "type": "string",
-                        "name": "text",
-                        "in": "formData"
+                        "name": "cursor",
+                        "in": "query"
                     },
                     {
-                        "description": "Authentication token. Requires scope: `reminders:write`",
+                        "description": "Authentication token. Requires scope: `conversations:read`",
                         "type": "string",
                         "name": "token",
-                        "in": "header"
+                        "in": "query"
                     },
                     {
-                        "description": "The user who will receive the reminder. If no user is specified, the reminder will go to user who created it.",
+                        "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000.",
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Browse conversations by a specific user ID's membership. Non-public channels are restricted to those where the calling user shares membership.",
                         "type": "string",
                         "name": "user",
-                        "in": "formData"
+                        "in": "query"
                     },
                     {
-                        "description": "When this reminder should happen: the Unix timestamp (up to five years from now), the number of seconds until the reminder (if within 24 hours), or a natural language description (Ex. \"in 15 minutes,\" or \"every Thursday\")",
+                        "description": "Set to `true` to exclude archived channels from the list",
+                        "type": "boolean",
+                        "name": "exclude_archived",
+                        "in": "query"
+                    },
+                    {
+                        "description": "Mix and match channel types by providing a comma-separated list of any combination of `public_channel`, `private_channel`, `mpim`, `im`",
                         "type": "string",
-                        "name": "time",
-                        "in": "formData"
+                        "name": "types",
+                        "in": "query"
                     }
                 ],
                 "tags": [
-                    "reminders"
+                    "users"
                 ],
                 "produces": [
                     "application/json"
@@ -11623,19 +11896,21 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "reminders:write"
+                            "channels:read",
+                            "groups:read",
+                            "im:read",
+                            "mpim:read"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/reminders.add",
+                    "url": "https://api.slack.com/methods/users.conversations",
                     "description": "API method documentation"
                 },
                 "consumes": [
-                    "application/x-www-form-urlencoded",
-                    "application/json"
+                    "application/x-www-form-urlencoded"
                 ],
-                "operationId": "reminders_add"
+                "operationId": "users_conversations"
             }
         },
         "/conversations.setPurpose": {
@@ -12580,7 +12855,7 @@
                 "operationId": "conversations_info"
             }
         },
-        "/channels.unarchive": {
+        "/chat.meMessage": {
             "post": {
                 "responses": {
                     "default": {
@@ -12624,28 +12899,36 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "ok": true,
+                                "ts": "1417671948.000006",
+                                "channel": "C024BE7LR"
                             }
                         }
                     }
                 },
-                "description": "Unarchives a channel.",
+                "description": "Share a me message into a channel.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `channels:write`",
+                        "description": "Text of the message to send.",
+                        "type": "string",
+                        "name": "text",
+                        "in": "formData"
+                    },
+                    {
+                        "description": "Authentication token. Requires scope: `chat:write:user`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Channel to unarchive",
+                        "description": "Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.",
                         "type": "string",
                         "name": "channel",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "channels"
+                    "chat"
                 ],
                 "produces": [
                     "application/json"
@@ -12653,19 +12936,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "channels:write"
+                            "chat:write:user"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/channels.unarchive",
+                    "url": "https://api.slack.com/methods/chat.meMessage",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "channels_unarchive"
+                "operationId": "chat_meMessage"
             }
         },
         "/dnd.endSnooze": {
@@ -13414,45 +13697,21 @@
                 "operationId": "groups_setTopic"
             }
         },
-        "/mpim.open": {
+        "/im.close": {
             "post": {
                 "responses": {
                     "default": {
                         "schema": {
-                            "description": "Schema for error response from mpim.open method",
-                            "title": "mpim.open error schema",
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default error template",
                             "required": [
-                                "ok",
-                                "error"
+                                "ok"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_false"
-                                },
-                                "error": {
-                                    "enum": [
-                                        "users_list_not_supplied",
-                                        "not_enough_users",
-                                        "too_many_users",
-                                        "not_authed",
-                                        "invalid_auth",
-                                        "account_inactive",
-                                        "no_permission",
-                                        "invalid_arg_name",
-                                        "invalid_array_arg",
-                                        "invalid_charset",
-                                        "invalid_form_data",
-                                        "invalid_post_type",
-                                        "missing_post_type",
-                                        "team_added_to_org",
-                                        "invalid_json",
-                                        "json_not_object",
-                                        "request_timeout",
-                                        "upgrade_required"
-                                    ],
-                                    "type": "string"
+                                    "$ref": "#/definitions/defs_ok_true"
                                 }
                             }
                         },
@@ -13466,51 +13725,44 @@
                     },
                     "200": {
                         "schema": {
-                            "description": "Schema for successful response from mpim.open method",
-                            "title": "mpim.open success schema",
+                            "description": "Verbose schema not yet ready for this method.",
+                            "title": "Default success template",
                             "required": [
-                                "ok",
-                                "group"
+                                "ok"
                             ],
                             "additionalProperties": true,
                             "type": "object",
                             "properties": {
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
-                                },
-                                "group": {
-                                    "$ref": "#/definitions/objs_group"
                                 }
                             }
                         },
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true,
-                                "channel": {
-                                    "id": "D024BFF1M"
-                                }
+                                "ok": true
                             }
                         }
                     }
                 },
-                "description": "This method opens a multiparty direct message.",
+                "description": "Close a direct message channel.",
                 "parameters": [
                     {
-                        "description": "Authentication token. Requires scope: `mpim:write`",
+                        "description": "Authentication token. Requires scope: `im:write`",
                         "type": "string",
                         "name": "token",
                         "in": "header"
                     },
                     {
-                        "description": "Comma separated lists of users.  The ordering of the users is preserved whenever a MPIM group is returned.",
+                        "description": "Direct message channel to close.",
                         "type": "string",
-                        "name": "users",
+                        "name": "channel",
                         "in": "formData"
                     }
                 ],
                 "tags": [
-                    "mpim"
+                    "im"
                 ],
                 "produces": [
                     "application/json"
@@ -13518,19 +13770,19 @@
                 "security": [
                     {
                         "slackAuth": [
-                            "mpim:write"
+                            "im:write"
                         ]
                     }
                 ],
                 "externalDocs": {
-                    "url": "https://api.slack.com/methods/mpim.open",
+                    "url": "https://api.slack.com/methods/im.close",
                     "description": "API method documentation"
                 },
                 "consumes": [
                     "application/x-www-form-urlencoded",
                     "application/json"
                 ],
-                "operationId": "mpim_open"
+                "operationId": "im_close"
             }
         },
         "/reactions.remove": {
@@ -16019,8 +16271,6 @@
                                                     "reply_count",
                                                     "replies",
                                                     "subscribed",
-                                                    "last_read",
-                                                    "unread_count",
                                                     "ts"
                                                 ],
                                                 "type": "object",
@@ -17447,10 +17697,7 @@
                     "type": "number"
                 },
                 "tz": {
-                    "type": [
-                        "null",
-                        "string"
-                    ]
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -17560,6 +17807,9 @@
             "additionalProperties": true,
             "type": "object",
             "properties": {
+                "thumb_480_w": {
+                    "type": "integer"
+                },
                 "reactions": {
                     "items": {
                         "$ref": "#/definitions/objs_reaction"
@@ -17572,15 +17822,18 @@
                 "filetype": {
                     "type": "string"
                 },
-                "channels": {
-                    "additionalProperties": true,
-                    "items": {
-                        "$ref": "#/definitions/defs_channel_id"
-                    },
-                    "type": "array"
+                "thumb_800_h": {
+                    "type": "integer"
+                },
+                "thumb_480": {
+                    "type": "string",
+                    "format": "uri"
                 },
                 "display_as_bot": {
                     "type": "boolean"
+                },
+                "thumb_800_w": {
+                    "type": "integer"
                 },
                 "thumb_64": {
                     "type": "string",
@@ -17602,6 +17855,9 @@
                     "type": "string",
                     "format": "uri"
                 },
+                "thumb_720_h": {
+                    "type": "integer"
+                },
                 "thumb_360": {
                     "type": "string",
                     "format": "uri"
@@ -17613,11 +17869,20 @@
                     "items": {},
                     "type": "array"
                 },
+                "thumb_720_w": {
+                    "type": "integer"
+                },
                 "thumb_80": {
                     "type": "string",
                     "format": "uri"
                 },
+                "comments_count": {
+                    "type": "integer"
+                },
                 "thumb_360_h": {
+                    "type": "integer"
+                },
+                "thumb_480_h": {
                     "type": "integer"
                 },
                 "original_w": {
@@ -17625,6 +17890,10 @@
                 },
                 "username": {
                     "type": "string"
+                },
+                "thumb_800": {
+                    "type": "string",
+                    "format": "uri"
                 },
                 "timestamp": {
                     "type": "integer"
@@ -17646,12 +17915,20 @@
                     "type": "string",
                     "format": "uri"
                 },
+                "thumb_1024": {
+                    "type": "string",
+                    "format": "uri"
+                },
                 "user": {
                     "type": "string"
                 },
                 "groups": {
                     "items": {},
                     "type": "array"
+                },
+                "thumb_960": {
+                    "type": "string",
+                    "format": "uri"
                 },
                 "is_public": {
                     "type": "boolean"
@@ -17679,17 +17956,37 @@
                 "created": {
                     "type": "integer"
                 },
+                "thumb_1024_h": {
+                    "type": "integer"
+                },
+                "thumb_960_h": {
+                    "type": "integer"
+                },
                 "pinned_to": {
                     "items": {
                         "$ref": "#/definitions/defs_channel"
                     },
                     "type": "array"
                 },
-                "comments_count": {
+                "thumb_960_w": {
+                    "type": "integer"
+                },
+                "thumb_1024_w": {
                     "type": "integer"
                 },
                 "mode": {
                     "type": "string"
+                },
+                "thumb_720": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "channels": {
+                    "additionalProperties": true,
+                    "items": {
+                        "$ref": "#/definitions/defs_channel_id"
+                    },
+                    "type": "array"
                 }
             },
             "title": "file object"
@@ -17778,10 +18075,7 @@
                     "format": "uri"
                 },
                 "fields": {
-                    "type": [
-                        "object",
-                        "null"
-                    ]
+                    "type": "object"
                 },
                 "real_name": {
                     "type": "string"
@@ -17846,10 +18140,10 @@
                     "type": "string"
                 },
                 "possible_values": {
-                    "type": [
-                        "null",
-                        "array"
-                    ]
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 },
                 "label": {
                     "type": "string"
@@ -17865,10 +18159,10 @@
                     "type": "string"
                 },
                 "options": {
-                    "type": [
-                        "null",
-                        "array"
-                    ]
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 }
             }
         },
@@ -18247,7 +18541,7 @@
                 },
                 "users": {
                     "items": {
-                        "$ref": "#/definitions/objs_user"
+                        "$ref": "#/definitions/defs_user_id"
                     },
                     "type": "array"
                 }
@@ -18320,10 +18614,7 @@
             "type": "object",
             "properties": {
                 "first_name": {
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "type": "string"
                 },
                 "display_name": {
                     "type": "string"
@@ -18376,7 +18667,6 @@
                         "is_archived",
                         "is_channel",
                         "is_general",
-                        "is_member",
                         "is_mpim",
                         "is_group",
                         "is_org_shared",
@@ -18900,12 +19190,11 @@
         "objs_team": {
             "additionalProperties": true,
             "required": [
+                "id",
+                "name",
                 "domain",
                 "email_domain",
-                "has_compliance_export",
-                "icon",
-                "id",
-                "name"
+                "icon"
             ],
             "type": "object",
             "properties": {
@@ -18915,14 +19204,20 @@
                 "name": {
                     "type": "string"
                 },
+                "enterprise_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "$ref": "#/definitions/defs_team"
+                },
                 "email_domain": {
                     "type": "string"
                 },
                 "has_compliance_export": {
                     "type": "boolean"
                 },
-                "id": {
-                    "$ref": "#/definitions/defs_team"
+                "enterprise_id": {
+                    "type": "string"
                 },
                 "icon": {
                     "type": "object",
@@ -18969,10 +19264,7 @@
             "type": "object",
             "properties": {
                 "first_name": {
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "type": "string"
                 },
                 "display_name": {
                     "type": "string"
@@ -19001,6 +19293,9 @@
             ],
             "type": "object",
             "properties": {
+                "comment": {
+                    "$ref": "#/definitions/objs_comment"
+                },
                 "reactions": {
                     "items": {
                         "$ref": "#/definitions/objs_reaction"
@@ -19048,8 +19343,14 @@
                 "topic": {
                     "type": "string"
                 },
+                "display_as_bot": {
+                    "type": "boolean"
+                },
                 "reply_count": {
                     "type": "integer"
+                },
+                "file": {
+                    "$ref": "#/definitions/objs_file"
                 },
                 "replies": {
                     "items": {
@@ -19122,6 +19423,9 @@
                 "name": {
                     "type": "string"
                 },
+                "upload": {
+                    "type": "boolean"
+                },
                 "pinned_to": {
                     "items": {
                         "$ref": "#/definitions/defs_channel"
@@ -19131,6 +19435,9 @@
                 "unread_count": {
                     "type": "integer"
                 },
+                "is_intro": {
+                    "type": "boolean"
+                },
                 "team": {
                     "$ref": "#/definitions/defs_team"
                 },
@@ -19138,7 +19445,15 @@
                     "$ref": "#/definitions/defs_user_id"
                 },
                 "bot_id": {
-                    "$ref": "#/definitions/defs_bot_id"
+                    "items": [
+                        {
+                            "$ref": "#/definitions/defs_bot_id"
+                        },
+                        {
+                            "type": "null",
+                            "title": "Nil bot_id set when display_as_bot is false"
+                        }
+                    ]
                 }
             },
             "title": "Message object"
