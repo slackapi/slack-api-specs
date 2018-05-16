@@ -1536,13 +1536,13 @@
         },
         "objs_scopes": {
             "items": {
-                "examples": [
+                "title": "Named OAuth scopes",
+                "type": "string",
+                "x-examples": [
                     "chat:write",
                     "im:history",
                     "im:read"
-                ],
-                "title": "Named OAuth scopes",
-                "type": "string"
+                ]
             },
             "type": "array"
         },
@@ -1619,7 +1619,7 @@
                     "type": "string"
                 },
                 "prefs": {
-                    "ref": "./common/schemas/common_team_prefs_schema.json#/prefs"
+                    "$ref": "#/definitions/team_prefs_prefs"
                 }
             },
             "required": [
@@ -1959,6 +1959,963 @@
                 "display_name",
                 "team"
             ],
+            "type": "object"
+        },
+        "prefs_prefs": {
+            "additionalProperties": true,
+            "properties": {
+                "a11y_animations": {
+                    "type": "boolean"
+                },
+                "a11y_font_size": {
+                    "type": "string"
+                },
+                "all_channels_loud": {
+                    "type": "boolean"
+                },
+                "all_notifications_prefs": {
+                    "type": "string"
+                },
+                "all_unreads_sort_order": {
+                    "type": "string"
+                },
+                "allow_calls_to_set_current_status": {
+                    "type": "boolean"
+                },
+                "allow_cmd_tab_iss": {
+                    "type": "boolean"
+                },
+                "analytics_upsell_coachmark_seen": {
+                    "type": "boolean"
+                },
+                "arrow_history": {
+                    "type": "boolean"
+                },
+                "at_channel_suppressed_channels": {
+                    "type": "string"
+                },
+                "box_enabled": {
+                    "type": "boolean"
+                },
+                "channel_sort": {
+                    "type": "string"
+                },
+                "client_logs_pri": {
+                    "type": "string"
+                },
+                "color_names_in_list": {
+                    "type": "boolean"
+                },
+                "confirm_clear_all_unreads": {
+                    "type": "boolean"
+                },
+                "confirm_sh_call_start": {
+                    "type": "boolean"
+                },
+                "confirm_user_marked_away": {
+                    "type": "boolean"
+                },
+                "convert_emoticons": {
+                    "type": "boolean"
+                },
+                "display_display_names": {
+                    "type": "boolean"
+                },
+                "display_real_names_override": {
+                    "type": "integer"
+                },
+                "dnd_enabled": {
+                    "type": "boolean"
+                },
+                "dnd_end_hour": {
+                    "type": "string"
+                },
+                "dnd_start_hour": {
+                    "type": "string"
+                },
+                "dropbox_enabled": {
+                    "type": "boolean"
+                },
+                "email_alerts": {
+                    "type": "string"
+                },
+                "email_alerts_sleep_until": {
+                    "type": "integer"
+                },
+                "email_developer": {
+                    "type": "boolean"
+                },
+                "email_misc": {
+                    "type": "boolean"
+                },
+                "email_offers": {
+                    "type": "boolean"
+                },
+                "email_research": {
+                    "type": "boolean"
+                },
+                "email_tips": {
+                    "type": "boolean"
+                },
+                "email_weekly": {
+                    "type": "boolean"
+                },
+                "emoji_autocomplete_big": {
+                    "type": "boolean"
+                },
+                "emoji_mode": {
+                    "type": "string"
+                },
+                "emoji_use": {
+                    "type": "string"
+                },
+                "enable_react_emoji_picker": {
+                    "type": "boolean"
+                },
+                "enable_unread_view": {
+                    "type": "boolean"
+                },
+                "enhanced_debugging": {
+                    "type": "boolean"
+                },
+                "ent_org_wide_channels_sidebar": {
+                    "type": "boolean"
+                },
+                "enter_is_special_in_tbt": {
+                    "type": "boolean"
+                },
+                "enterprise_excluded_app_teams": {
+                    "type": "null"
+                },
+                "enterprise_mdm_custom_msg": {
+                    "type": "string"
+                },
+                "enterprise_migration_seen": {
+                    "type": "boolean"
+                },
+                "expand_inline_imgs": {
+                    "type": "boolean"
+                },
+                "expand_internal_inline_imgs": {
+                    "type": "boolean"
+                },
+                "expand_non_media_attachments": {
+                    "type": "boolean"
+                },
+                "expand_snippets": {
+                    "type": "boolean"
+                },
+                "f_key_search": {
+                    "type": "boolean"
+                },
+                "flannel_server_pool": {
+                    "type": "string"
+                },
+                "folder_data": {
+                    "type": "string"
+                },
+                "folders_enabled": {
+                    "type": "boolean"
+                },
+                "frecency_ent_jumper": {
+                    "type": "string"
+                },
+                "frecency_ent_jumper_backup": {
+                    "type": "string"
+                },
+                "frecency_jumper": {
+                    "type": "string"
+                },
+                "full_text_extracts": {
+                    "type": "boolean"
+                },
+                "fuller_timestamps": {
+                    "type": "boolean"
+                },
+                "gdrive_authed": {
+                    "type": "boolean"
+                },
+                "gdrive_enabled": {
+                    "type": "boolean"
+                },
+                "graphic_emoticons": {
+                    "type": "boolean"
+                },
+                "growls_enabled": {
+                    "type": "boolean"
+                },
+                "growth_all_banners_prefs": {
+                    "type": "string"
+                },
+                "growth_msg_limit_approaching_cta_count": {
+                    "type": "integer"
+                },
+                "growth_msg_limit_approaching_cta_ts": {
+                    "type": "integer"
+                },
+                "growth_msg_limit_long_reached_cta_count": {
+                    "type": "integer"
+                },
+                "growth_msg_limit_long_reached_cta_last_ts": {
+                    "type": "integer"
+                },
+                "growth_msg_limit_reached_cta_count": {
+                    "type": "integer"
+                },
+                "growth_msg_limit_reached_cta_last_ts": {
+                    "type": "integer"
+                },
+                "growth_msg_limit_sixty_day_banner_cta_count": {
+                    "type": "integer"
+                },
+                "growth_msg_limit_sixty_day_banner_cta_last_ts": {
+                    "type": "integer"
+                },
+                "has_created_channel": {
+                    "type": "boolean"
+                },
+                "has_invited": {
+                    "type": "boolean"
+                },
+                "has_recently_shared_a_channel": {
+                    "type": "boolean"
+                },
+                "has_searched": {
+                    "type": "boolean"
+                },
+                "has_uploaded": {
+                    "type": "boolean"
+                },
+                "hide_hex_swatch": {
+                    "type": "boolean"
+                },
+                "hide_user_group_info_pane": {
+                    "type": "boolean"
+                },
+                "highlight_words": {
+                    "type": "string"
+                },
+                "in_interactive_mas_migration_flow": {
+                    "type": "boolean"
+                },
+                "intro_to_apps_message_seen": {
+                    "type": "boolean"
+                },
+                "jumbomoji": {
+                    "type": "boolean"
+                },
+                "k_key_omnibox": {
+                    "type": "boolean"
+                },
+                "k_key_omnibox_auto_hide_count": {
+                    "type": "integer"
+                },
+                "keyboard": {
+                    "type": "null"
+                },
+                "last_seen_at_channel_warning": {
+                    "type": "integer"
+                },
+                "last_snippet_type": {
+                    "type": "string"
+                },
+                "last_tos_acknowledged": {
+                    "type": "string"
+                },
+                "lessons_enabled": {
+                    "type": "boolean"
+                },
+                "load_lato_2": {
+                    "type": "boolean"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "locales_enabled": {
+                    "additionalProperties": true,
+                    "properties": {
+                        "de-DE": {
+                            "type": "string"
+                        },
+                        "en-US": {
+                            "type": "string"
+                        },
+                        "es-ES": {
+                            "type": "string"
+                        },
+                        "fr-FR": {
+                            "type": "string"
+                        },
+                        "ja-JP": {
+                            "type": "string"
+                        },
+                        "pseudo": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "loud_channels": {
+                    "type": "string"
+                },
+                "loud_channels_set": {
+                    "type": "string"
+                },
+                "ls_disabled": {
+                    "type": "boolean"
+                },
+                "mac_ssb_bounce": {
+                    "type": "string"
+                },
+                "mac_ssb_bullet": {
+                    "type": "boolean"
+                },
+                "mark_msgs_read_immediately": {
+                    "type": "boolean"
+                },
+                "measure_css_usage": {
+                    "type": "boolean"
+                },
+                "mentions_exclude_at_channels": {
+                    "type": "boolean"
+                },
+                "mentions_exclude_at_user_groups": {
+                    "type": "boolean"
+                },
+                "messages_theme": {
+                    "type": "string"
+                },
+                "msg_input_send_btn": {
+                    "type": "boolean"
+                },
+                "msg_input_send_btn_auto_set": {
+                    "type": "boolean"
+                },
+                "msg_preview": {
+                    "type": "boolean"
+                },
+                "msg_preview_persistent": {
+                    "type": "boolean"
+                },
+                "mute_sounds": {
+                    "type": "boolean"
+                },
+                "muted_channels": {
+                    "type": "string"
+                },
+                "never_channels": {
+                    "type": "string"
+                },
+                "new_msg_snd": {
+                    "type": "string"
+                },
+                "newxp_seen_last_message": {
+                    "type": "integer"
+                },
+                "no_created_overlays": {
+                    "type": "boolean"
+                },
+                "no_invites_widget_in_sidebar": {
+                    "type": "boolean"
+                },
+                "no_joined_overlays": {
+                    "type": "boolean"
+                },
+                "no_macelectron_banner": {
+                    "type": "boolean"
+                },
+                "no_macssb1_banner": {
+                    "type": "boolean"
+                },
+                "no_macssb2_banner": {
+                    "type": "boolean"
+                },
+                "no_omnibox_in_channels": {
+                    "type": "boolean"
+                },
+                "no_text_in_notifications": {
+                    "type": "boolean"
+                },
+                "no_winssb1_banner": {
+                    "type": "boolean"
+                },
+                "obey_inline_img_limit": {
+                    "type": "boolean"
+                },
+                "onboarding_cancelled": {
+                    "type": "boolean"
+                },
+                "onboarding_slackbot_conversation_step": {
+                    "type": "integer"
+                },
+                "overloaded_message_enabled": {
+                    "type": "boolean"
+                },
+                "pagekeys_handled": {
+                    "type": "boolean"
+                },
+                "posts_formatting_guide": {
+                    "type": "boolean"
+                },
+                "preferred_skin_tone": {
+                    "type": "string"
+                },
+                "privacy_policy_seen": {
+                    "type": "boolean"
+                },
+                "prompted_for_email_disabling": {
+                    "type": "boolean"
+                },
+                "purchaser": {
+                    "type": "boolean"
+                },
+                "push_at_channel_suppressed_channels": {
+                    "type": "string"
+                },
+                "push_dm_alert": {
+                    "type": "boolean"
+                },
+                "push_everything": {
+                    "type": "boolean"
+                },
+                "push_idle_wait": {
+                    "type": "integer"
+                },
+                "push_loud_channels": {
+                    "type": "string"
+                },
+                "push_loud_channels_set": {
+                    "type": "string"
+                },
+                "push_mention_alert": {
+                    "type": "boolean"
+                },
+                "push_mention_channels": {
+                    "type": "string"
+                },
+                "push_show_preview": {
+                    "type": "boolean"
+                },
+                "push_sound": {
+                    "type": "string"
+                },
+                "require_at": {
+                    "type": "boolean"
+                },
+                "search_exclude_bots": {
+                    "type": "boolean"
+                },
+                "search_exclude_channels": {
+                    "type": "string"
+                },
+                "search_only_current_team": {
+                    "type": "boolean"
+                },
+                "search_only_my_channels": {
+                    "type": "boolean"
+                },
+                "search_sort": {
+                    "type": "string"
+                },
+                "seen_administration_menu": {
+                    "type": "boolean"
+                },
+                "seen_app_space_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_app_space_tutorial": {
+                    "type": "boolean"
+                },
+                "seen_calls_interactive_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_channel_browser_admin_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_custom_status_badge": {
+                    "type": "boolean"
+                },
+                "seen_custom_status_callout": {
+                    "type": "boolean"
+                },
+                "seen_domain_invite_reminder": {
+                    "type": "boolean"
+                },
+                "seen_emoji_update_overlay_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_gdrive_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_guest_admin_slackbot_announcement": {
+                    "type": "boolean"
+                },
+                "seen_highlights_arrows_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_highlights_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_highlights_warm_welcome": {
+                    "type": "boolean"
+                },
+                "seen_intl_channel_names_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_japanese_locale_change_message": {
+                    "type": "boolean"
+                },
+                "seen_keyboard_shortcuts_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_locale_change_message": {
+                    "type": "integer"
+                },
+                "seen_member_invite_reminder": {
+                    "type": "boolean"
+                },
+                "seen_name_tagging_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_banner": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_channels": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_direct_messages": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_invites": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_private_groups": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_recent_mentions": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_search": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_slackbot_conversation": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_starred_items": {
+                    "type": "boolean"
+                },
+                "seen_onboarding_start": {
+                    "type": "boolean"
+                },
+                "seen_shared_channels_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_shared_channels_opt_in_change_message": {
+                    "type": "boolean"
+                },
+                "seen_shdep_slackbot_message": {
+                    "type": "boolean"
+                },
+                "seen_single_emoji_msg": {
+                    "type": "boolean"
+                },
+                "seen_ssb_prompt": {
+                    "type": "boolean"
+                },
+                "seen_threads_notification_banner": {
+                    "type": "boolean"
+                },
+                "seen_unread_view_coachmark": {
+                    "type": "boolean"
+                },
+                "seen_welcome_2": {
+                    "type": "boolean"
+                },
+                "separate_private_channels": {
+                    "type": "boolean"
+                },
+                "separate_shared_channels": {
+                    "type": "boolean"
+                },
+                "shdep_promo_code_submitted": {
+                    "type": "boolean"
+                },
+                "show_all_skin_tones": {
+                    "type": "boolean"
+                },
+                "show_ent_onboarding": {
+                    "type": "boolean"
+                },
+                "show_jumper_scores": {
+                    "type": "boolean"
+                },
+                "show_memory_instrument": {
+                    "type": "boolean"
+                },
+                "show_sidebar_quickswitcher_button": {
+                    "type": "boolean"
+                },
+                "show_typing": {
+                    "type": "boolean"
+                },
+                "sidebar_behavior": {
+                    "type": "string"
+                },
+                "sidebar_theme": {
+                    "type": "string"
+                },
+                "sidebar_theme_custom_values": {
+                    "type": "string"
+                },
+                "snippet_editor_wrap_long_lines": {
+                    "type": "boolean"
+                },
+                "spaces_new_xp_banner_dismissed": {
+                    "type": "boolean"
+                },
+                "ss_emojis": {
+                    "type": "boolean"
+                },
+                "ssb_space_window": {
+                    "type": "string"
+                },
+                "start_scroll_at_oldest": {
+                    "type": "boolean"
+                },
+                "tab_ui_return_selects": {
+                    "type": "boolean"
+                },
+                "threads_everything": {
+                    "type": "boolean"
+                },
+                "time24": {
+                    "type": "boolean"
+                },
+                "two_factor_auth_enabled": {
+                    "type": "boolean"
+                },
+                "two_factor_backup_type": {
+                    "type": "null"
+                },
+                "two_factor_type": {
+                    "type": "null"
+                },
+                "tz": {
+                    "type": "string"
+                },
+                "user_colors": {
+                    "type": "string"
+                },
+                "webapp_spellcheck": {
+                    "type": "boolean"
+                },
+                "welcome_message_hidden": {
+                    "type": "boolean"
+                },
+                "whats_new_read": {
+                    "type": "integer"
+                },
+                "winssb_run_from_tray": {
+                    "type": "boolean"
+                },
+                "winssb_window_flash_behavior": {
+                    "type": "string"
+                }
+            },
+            "title": "User Prefs object",
+            "type": "object"
+        },
+        "team_prefs_prefs": {
+            "additionalProperties": true,
+            "properties": {
+                "all_users_can_purchase": {
+                    "type": "boolean"
+                },
+                "allow_calls": {
+                    "type": "boolean"
+                },
+                "allow_calls_interactive_screen_sharing": {
+                    "type": "boolean"
+                },
+                "allow_message_deletion": {
+                    "type": "boolean"
+                },
+                "allow_retention_override": {
+                    "type": "boolean"
+                },
+                "allow_shared_channel_perms_override": {
+                    "type": "boolean"
+                },
+                "app_whitelist_enabled": {
+                    "type": "boolean"
+                },
+                "auth_mode": {
+                    "type": "string"
+                },
+                "calling_app_name": {
+                    "type": "string"
+                },
+                "can_receive_shared_channels_invites": {
+                    "type": "boolean"
+                },
+                "compliance_export_start": {
+                    "type": "integer"
+                },
+                "custom_status_default_emoji": {
+                    "type": "string"
+                },
+                "custom_status_presets": {
+                    "items": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1,
+                        "type": "array",
+                        "uniqueItems": true
+                    },
+                    "minItems": 1,
+                    "type": "array",
+                    "uniqueItems": true
+                },
+                "custom_tos": {
+                    "type": "boolean"
+                },
+                "default_channels": {
+                    "items": {
+                        "$ref": "#/definitions/defs_channel"
+                    },
+                    "type": "array"
+                },
+                "default_rxns": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "disable_email_ingestion": {
+                    "type": "boolean"
+                },
+                "disable_file_deleting": {
+                    "type": "boolean"
+                },
+                "disable_file_editing": {
+                    "type": "boolean"
+                },
+                "disable_file_uploads": {
+                    "type": "string"
+                },
+                "disallow_public_file_urls": {
+                    "type": "boolean"
+                },
+                "discoverable": {
+                    "type": "string"
+                },
+                "display_email_addresses": {
+                    "type": "boolean"
+                },
+                "display_real_names": {
+                    "type": "boolean"
+                },
+                "dm_retention_duration": {
+                    "type": "integer"
+                },
+                "dm_retention_type": {
+                    "type": "integer"
+                },
+                "dnd_enabled": {
+                    "type": "boolean"
+                },
+                "dnd_end_hour": {
+                    "type": "string"
+                },
+                "dnd_start_hour": {
+                    "type": "string"
+                },
+                "enable_shared_channels": {
+                    "type": "integer"
+                },
+                "enterprise_default_channels": {
+                    "type": "array"
+                },
+                "enterprise_mandatory_channels": {
+                    "type": "array"
+                },
+                "enterprise_mdm_date_enabled": {
+                    "type": "integer"
+                },
+                "enterprise_mdm_level": {
+                    "type": "integer"
+                },
+                "enterprise_team_creation_request": {
+                    "additionalProperties": true,
+                    "properties": {
+                        "is_enabled": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": [
+                        "is_enabled"
+                    ],
+                    "type": "object"
+                },
+                "file_limit_whitelisted": {
+                    "type": "boolean"
+                },
+                "file_retention_duration": {
+                    "type": "integer"
+                },
+                "file_retention_type": {
+                    "type": "integer"
+                },
+                "gdrive_enabled_team": {
+                    "type": "boolean"
+                },
+                "group_retention_duration": {
+                    "type": "integer"
+                },
+                "group_retention_type": {
+                    "type": "integer"
+                },
+                "hide_referers": {
+                    "type": "boolean"
+                },
+                "invites_limit": {
+                    "type": "boolean"
+                },
+                "invites_only_admins": {
+                    "type": "boolean"
+                },
+                "locale": {
+                    "type": "string"
+                },
+                "loud_channel_mentions_limit": {
+                    "type": "integer"
+                },
+                "msg_edit_window_mins": {
+                    "type": "integer"
+                },
+                "require_at_for_mention": {
+                    "type": "boolean"
+                },
+                "retention_duration": {
+                    "type": "integer"
+                },
+                "retention_type": {
+                    "type": "integer"
+                },
+                "show_join_leave": {
+                    "type": "boolean"
+                },
+                "uses_customized_custom_status_presets": {
+                    "type": "boolean"
+                },
+                "warn_before_at_channel": {
+                    "type": "string"
+                },
+                "who_can_archive_channels": {
+                    "type": "string"
+                },
+                "who_can_at_channel": {
+                    "type": "string"
+                },
+                "who_can_at_everyone": {
+                    "type": "string"
+                },
+                "who_can_change_team_profile": {
+                    "type": "string"
+                },
+                "who_can_create_channels": {
+                    "type": "string"
+                },
+                "who_can_create_delete_user_groups": {
+                    "type": "string"
+                },
+                "who_can_create_groups": {
+                    "type": "string"
+                },
+                "who_can_create_shared_channels": {
+                    "type": "string"
+                },
+                "who_can_edit_user_groups": {
+                    "type": "string"
+                },
+                "who_can_kick_channels": {
+                    "type": "string"
+                },
+                "who_can_kick_groups": {
+                    "type": "string"
+                },
+                "who_can_manage_guests": {
+                    "additionalProperties": true,
+                    "properties": {
+                        "type": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ],
+                    "type": "object"
+                },
+                "who_can_manage_integrations": {
+                    "additionalProperties": true,
+                    "properties": {
+                        "type": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ],
+                    "type": "object"
+                },
+                "who_can_manage_shared_channels": {
+                    "additionalProperties": true,
+                    "properties": {
+                        "type": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ],
+                    "type": "object"
+                },
+                "who_can_post_general": {
+                    "type": "string"
+                },
+                "who_can_post_in_shared_channels": {
+                    "additionalProperties": true,
+                    "properties": {
+                        "type": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ],
+                    "type": "object"
+                },
+                "who_has_team_visibility": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "default_channels"
+            ],
+            "title": "Team Prefs Object",
             "type": "object"
         }
     },
@@ -2398,21 +3355,21 @@
                                     "items": {
                                         "properties": {
                                             "id": {
-                                                "examples": [
+                                                "title": "An ID for a resource",
+                                                "type": "string",
+                                                "x-examples": [
                                                     "T0DES3UAN",
                                                     "C0ABC1ABC"
-                                                ],
-                                                "title": "An ID for a resource",
-                                                "type": "string"
+                                                ]
                                             },
                                             "type": {
-                                                "examples": [
+                                                "title": "The type of resource the `id` corresponds to",
+                                                "type": "string",
+                                                "x-examples": [
                                                     "team",
                                                     "channel",
                                                     "mpim"
-                                                ],
-                                                "title": "The type of resource the `id` corresponds to",
-                                                "type": "string"
+                                                ]
                                             }
                                         },
                                         "type": "object"
@@ -2423,10 +3380,10 @@
                                     "additionalProperties": true,
                                     "properties": {
                                         "next_cursor": {
-                                            "examples": [
+                                            "type": "string",
+                                            "x-examples": [
                                                 "dGVhbTpDMUg5UkVTR0w="
-                                            ],
-                                            "type": "string"
+                                            ]
                                         }
                                     },
                                     "required": [
@@ -14157,7 +15114,7 @@
                         },
                         "schema": {
                             "additionalProperties": true,
-                            "description": "Verbose schema not yet ready for this method.",
+                            "description": "Schema for successful response from mpim.mark method",
                             "properties": {
                                 "ok": {
                                     "$ref": "#/definitions/defs_ok_true"
@@ -14166,7 +15123,7 @@
                             "required": [
                                 "ok"
                             ],
-                            "title": "Default success template",
+                            "title": "mpim.mark schema",
                             "type": "object"
                         }
                     },
@@ -14180,16 +15137,42 @@
                         },
                         "schema": {
                             "additionalProperties": true,
-                            "description": "Verbose schema not yet ready for this method.",
+                            "description": "Schema for error response from mpim.mark method",
                             "properties": {
+                                "error": {
+                                    "enum": [
+                                        "channel_not_found",
+                                        "invalid_timestamp",
+                                        "not_authed",
+                                        "invalid_auth",
+                                        "account_inactive",
+                                        "token_revoked",
+                                        "no_permission",
+                                        "org_login_required",
+                                        "invalid_arg_name",
+                                        "invalid_array_arg",
+                                        "invalid_charset",
+                                        "invalid_form_data",
+                                        "invalid_post_type",
+                                        "missing_post_type",
+                                        "team_added_to_org",
+                                        "invalid_json",
+                                        "json_not_object",
+                                        "request_timeout",
+                                        "upgrade_required",
+                                        "fatal_error"
+                                    ],
+                                    "type": "string"
+                                },
                                 "ok": {
-                                    "$ref": "#/definitions/defs_ok_true"
+                                    "$ref": "#/definitions/defs_ok_false"
                                 }
                             },
                             "required": [
-                                "ok"
+                                "ok",
+                                "error"
                             ],
-                            "title": "Default error template",
+                            "title": "mpim.mark error schema",
                             "type": "object"
                         }
                     }
@@ -16769,7 +17752,7 @@
                                             "type": "string"
                                         },
                                         "prefs": {
-                                            "$ref": "../../common/schemas/common_user_prefs_schema.json#/prefs"
+                                            "$ref": "#/definitions/prefs_prefs"
                                         }
                                     },
                                     "required": [
@@ -16797,7 +17780,7 @@
                                     "type": "object"
                                 },
                                 "team": {
-                                    "ref": "#/definitions/objs_team"
+                                    "$ref": "#/definitions/objs_team"
                                 },
                                 "thread_only_channels": {
                                     "type": "array"
@@ -18027,7 +19010,24 @@
                         "description": "Typical success response",
                         "examples": {
                             "application/json": {
-                                "ok": true
+                                "ok": true,
+                                "team": {
+                                    "domain": "example",
+                                    "email_domain": "example.com",
+                                    "enterprise_id": "E1234A12AB",
+                                    "enterprise_name": "Umbrella Corporation",
+                                    "icon": {
+                                        "image_102": "https://...",
+                                        "image_132": "https://...",
+                                        "image_34": "https://...",
+                                        "image_44": "https://...",
+                                        "image_68": "https://...",
+                                        "image_88": "https://...",
+                                        "image_default": true
+                                    },
+                                    "id": "T12345",
+                                    "name": "My Team"
+                                }
                             }
                         },
                         "schema": {
@@ -19405,7 +20405,7 @@
                                 "ok",
                                 "channels"
                             ],
-                            "title": "conversations.list success schema",
+                            "title": "users.conversations success schema",
                             "type": "object"
                         }
                     },
