@@ -8,11 +8,11 @@ Read more about our open specification strategy in [this announcement](https://m
 
 ### Specification menu
 
-* [Web API](/web-api)
+* [Web API](web-api)
     - [OpenAPI 2.0 spec](web-api/slack_web_openapi_v2.json) - covers user and bot user token usage of public [Web API](https://api.slack.com/web) methods
-* [Events API](/events-api)
+* [Events API](events-api)
     - [AsyncAPI 1.0 spec](events-api/slack_events_api_async_v1.json) - a catalog of JSON schema for basic [Events API](https://api.slack.com/events-api) structure and a handful of detailed event types
-    - [JSON Schema](events-api/slack_common_event_wrapper_schema.js) - covers only the basic event wrapper all event types are delivered in
+    - [JSON Schema](events-api/slack_common_event_wrapper_schema.json) - covers only the basic event wrapper all event types delivered by Slack
 
 We continue to refine and expand schema and example coverage throughout all of our specifications.
 
