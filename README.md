@@ -23,3 +23,10 @@ We use a combination of internal metadata, custom scripting, and old fashioned w
 ### Pull requests
 
 Because our specifications are _artifacts_ of an incredible machine, we cannot accept pull requests for this repo. Please file issues with suggestions or bugs with the spec itself. Feedback about the APIs or features the specs describe should be directed to Slack's [developer support team](mailto:feedback@slack.com).
+
+
+## Recent changes
+
+Now we'll recount the major changes found in each new release of our specifications.
+
+* [Web API specifications changelog](web-api/CHANGELOG.md)
