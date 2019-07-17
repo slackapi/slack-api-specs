@@ -24,13 +24,9 @@ We use a combination of internal metadata, custom scripting, and old fashioned w
 
 Because our specifications are _artifacts_ of an incredible machine, we cannot accept pull requests for this repo. Please file issues with suggestions or bugs with the spec itself. Feedback about the APIs or features the specs describe should be directed to Slack's [developer support team](mailto:feedback@slack.com).
 
-### Changelog
 
-#### July 2019
+## Recent changes
 
-We've finally made some updates after a long period dormant. Thanks for bearing with us.
+Now we'll recount the major changes found in each new release of our specifications.
 
-* Brought OpenAPI 2.0 specification up to date with most of our internal metadata and JSON schema systems.
-    - Because OpenAPI 2.0 uses a _subset_ (and sometimes a _superset_) of JSON Schema, some schema definitions are modified in translation and not as expressive as reality. In particular, expressing `oneOf` is difficult.
-* Removed [`rtm.start`](https://api.slack.com/methods/rtm.start) from the method catalogue. Its response can vary and we strongly recommend developers to use [`rtm.connect`](https://api.slack.com/methods/rtm.start) instead.
-* Removed some of the `search.*` methods from the catalogue due to varied responses that cannot pass validation 
+* [Web API specifications changelog](web-api/CHANGELOG.md)
