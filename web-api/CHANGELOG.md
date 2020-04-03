@@ -1,5 +1,12 @@
 # Web API specifications changelog
 
+#### April 2020
+
+We fixed up the scripts that generate OpenAPI specs for us and have updated the spec to include many new methods and more solid schemas across the board. Full Block Kit schemas are still unavailable.
+
+The biggest recent change to note is that all IDs generated on Slack may now be longer than previously declared in the spec.
+
+
 #### July 2019
 
 We've finally made some updates after a long dormant period. Thanks for bearing with us.
