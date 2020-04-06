@@ -6,9 +6,7 @@ We fixed up the scripts that generate OpenAPI specs for us and have updated the 
 
 The biggest recent change to note is that all IDs generated on Slack may now be longer than previously declared in the spec.
 
-Note: it's possible to use `slack_web_openapi_v2.json` to generate a Postman Collection, but you must first modify the spec to be technically and factually invalid unfortunately. Add a top-level `"openapi": "3.0"` attribute near where `"swagger": "2.0"` is defined. `openapi` isn't a valid attribute for OpenAPI 2.0 schemas, and if it were, the version _should_ be `2.0`. Quirky. Postman also doesn't pick up the defined hostname and path `https://slack.com/api` that precedes all Web API method (for example, `https://slack.com/api/chat.postMessage`).
-
-We also now include a version of the spec without inline response examples, but still including response schemas. This might help you get the spec to work with particularly onerous validators.
+We now include a version of the spec without inline response examples, but still including response schemas. This might help you get the spec to work with particularly onerous validators.
 
 #### July 2019
 
