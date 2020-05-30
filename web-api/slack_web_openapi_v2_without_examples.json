@@ -2422,7 +2422,7 @@
                     "description": "enterprise user",
                     "properties": {
                         "color": {
-                            "description": "refercing to bug: https://jira.tinyspeck.com/browse/EVALUE-1559",
+                            "description": "referencing bug: https://jira.tinyspeck.com/browse/EVALUE-1559",
                             "pattern": "^$",
                             "type": "string"
                         },
