@@ -1,5 +1,17 @@
 # Web API specifications changelog
 
+#### August 2020
+
+A number of new methods, especially for admins, have been added to the API recently and are now accounted for here.
+
+Deprecated methods that precede the Conversations API are no longer listed in the specification. [Learn more](https://api.slack.com/changelog/2020-01-deprecating-antecedents-to-the-conversations-api).
+
+As usual, many clarifications as we harden our internal schema. 
+
+We're really looking forward to generating an OpenAPI 3.0 spec for you soon, as well as release more schema for Block Kit.
+
+Thanks for hanging in there.
+
 #### April 2020
 
 We fixed up the scripts that generate OpenAPI specs for us and have updated the spec to include many new methods and more solid schemas across the board. Full Block Kit schemas are still unavailable.
