@@ -9137,6 +9137,134 @@
                 ]
             }
         },
+        "/apps.connections.open": {
+          "post": {
+            "consumes": [
+              "application/x-www-form-urlencoded",
+              "application/json"
+            ],
+            "description": "Generate a temporary Socket Mode WebSocket URL that your app can connect to in order to receive events and interactive payloads over.",
+            "externalDocs": {
+              "description": "API method documentation",
+              "url": "https://api.slack.com/methods/apps.connections.open"
+            },
+            "operationId": "apps_connections_open",
+            "parameters": [
+              {
+                "description": "Authentication token. Requires scope: `connections:write`, optional over Bearer Auth",
+                "in": "formData",
+                "name": "token",
+                "required": false,
+                "type": "string"
+              }
+            ],
+            "produces": [
+              "application/json"
+            ],
+            "responses": {
+              "200": {
+                "description": "Typical success response",
+                "examples": {
+                  "application/json": {
+                    "ok": true,
+                    "url": "wss://..."
+                  }
+                },
+                "schema": {
+                  "additionalProperties": false,
+                  "description": "Schema for successful response from apps.connections.open method",
+                  "properties": {
+                    "ok": {
+                      "$ref": "#/definitions/defs_ok_true"
+                    },
+                    "url": {
+                      "format": "uri",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "url"
+                  ],
+                  "title": "apps.connections.open schema",
+                  "type": "object"
+                }
+              },
+              "default": {
+                "description": "Typical error response",
+                "examples": {
+                  "application/json": {
+                    "error": "invalid_auth",
+                    "ok": false
+                  }
+                },
+                "schema": {
+                  "additionalProperties": false,
+                  "description": "Schema for error response from rtm.connect method",
+                  "properties": {
+                    "callstack": {
+                      "description": "Note: PHP callstack is only visible in dev/qa",
+                      "type": "string"
+                    },
+                    "error": {
+                      "enum": [
+                        "invalid_auth",
+                        "missing_args",
+                        "internal_error",
+                        "insecure_request",
+                        "forbidden_team",
+                        "not_authed",
+                        "account_inactive",
+                        "token_revoked",
+                        "no_permission",
+                        "org_login_required",
+                        "ekm_access_denied",
+                        "missing_scope",
+                        "not_allowed_token_type",
+                        "method_deprecated",
+                        "deprecated_endpoint",
+                        "two_factor_setup_required",
+                        "enterprise_is_restricted",
+                        "is_bot",
+                        "invalid_arguments",
+                        "invalid_arg_name",
+                        "invalid_array_arg",
+                        "invalid_charset",
+                        "invalid_form_data",
+                        "invalid_post_type",
+                        "missing_post_type",
+                        "team_added_to_org",
+                        "ratelimited",
+                        "accesslimited",
+                        "request_timeout",
+                        "service_unavailable",
+                        "fatal_error"
+                      ],
+                      "type": "string"
+                    },
+                    "ok": {
+                      "$ref": "#/definitions/defs_ok_false"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "error"
+                  ],
+                  "title": "apps.connections.open error schema",
+                  "type": "object"
+                }
+              }
+            },
+            "security": [
+              {
+                "auth_bearer": []
+              }
+            ],
+            "tags": [
+              "socket",
+            ]
+          }
+        },
         "/apps.event.authorizations.list": {
             "get": {
                 "consumes": [
@@ -27434,6 +27562,11 @@
             },
             "tokenUrl": "https://slack.com/api/oauth.access",
             "type": "oauth2"
+        },
+        "auth_bearer": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "Authorization"
         }
     },
     "swagger": "2.0",
