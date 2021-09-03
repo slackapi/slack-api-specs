@@ -2,6 +2,12 @@
 
 This repository contains API specifications of Slack platform features and APIs.
 
+## ⚠️ Not Accepting Contributions
+
+Because our specifications are _artifacts_ of an incredible machine, we cannot accept pull requests for this repo. Please file issues with suggestions or bugs with the spec itself. Feedback about the APIs or features the specs describe should be directed to Slack's [developer support team](mailto:feedback@slack.com).
+
+## Overview
+
 You'll find [OpenAPI specs](https://swagger.io/specification/) for the [Slack Web API](https://api.slack.com/web) and [AsyncAPI](https://www.asyncapi.com/v1/guide/) specs for the [Events API](https://api.slack.com/events-api).
 
 Read more about our open specification strategy in [this announcement](https://medium.com/slack-developer-blog/standard-practice-slack-web-openapi-spec-daaad18c7f8).
@@ -19,10 +25,6 @@ We continue to refine and expand schema and example coverage throughout all of o
 ### How the specs are made
 
 We use a combination of internal metadata, custom scripting, and old fashioned writing-by-hand to produce these specifications. They don't always tell the whole truth and are subject to author and operator error. They are really useful though.
-
-### Pull requests
-
-Because our specifications are _artifacts_ of an incredible machine, we cannot accept pull requests for this repo. Please file issues with suggestions or bugs with the spec itself. Feedback about the APIs or features the specs describe should be directed to Slack's [developer support team](mailto:feedback@slack.com).
 
 
 ## Recent changes

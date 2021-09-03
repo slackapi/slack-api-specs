@@ -6,6 +6,8 @@ well.
 
 There are many ways you can contribute! :heart:
 
+⚠️ At this time we do not accept pull requests from the community.
+
 ### Bug Reports :bug:
 -  If you find a bug, please search for it in the [Issues](https://github.com/slackapi/slack-api-specs/issues), and if it isn't already tracked,
    [create a new issue](https://github.com/slackapi/slack-api-specs/issues/new). Fill out the "Bug Report" section of the issue template. Even if an Issue is closed, feel free to comment and add details, it will still
